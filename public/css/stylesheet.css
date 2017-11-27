@@ -2,16 +2,25 @@
 
 
 /*Global Styles*/
-html {
-    box-sizing: border-box;
-}
-*, *:before, *:after {
-    box-sizing: inherit;
-}
+
 
 /*Section Styles*/
+.background1 {
+  background-image: url(../images/1.jpg);
+  background-size: cover;
+}
 
+.background3 {
+  background-image: url(../images/3.jpg);
+  background-size: cover;
+}
 
+.onevh {
+  min-height: 100vh;
+}
+.pagespacer {
+  padding-top: 9rem;
+}
 /*Header & Footer*/
 
 
