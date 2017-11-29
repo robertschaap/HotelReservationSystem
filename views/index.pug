@@ -3,7 +3,6 @@ extends layout.pug
 block content
   main(role="main")
 
-
     //- Main Welcome Block
     div.onevh.mb-0.background1
       div.container
@@ -50,7 +49,7 @@ block content
               button.btn.btn-info.btn-block(type='submit') Log In
 
     //- Rooms Block
-    div.onevh.mb-0.bg-white
+    div#rooms.onevh.mb-0.bg-white
       div.container
         div.row.pagespacer
         div.row
@@ -65,7 +64,7 @@ block content
             h3 Standard Room
             p.lead
               | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
-            button.btn.btn-info(type='button') Book Now »
+            button.btn.btn-info(type='button') Check Availability »
 
         div.row.mb-3
           div.col-md-6
@@ -74,7 +73,7 @@ block content
             h3 Deluxe Room
             p.lead
               | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
-            button.btn.btn-info(type='button') Book Now »
+            button.btn.btn-info(type='button') Check Availability »
 
         div.row.mb-3
           div.col-md-6.order-md-2
@@ -83,7 +82,7 @@ block content
             h3 Junior Suite
             p.lead
               | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
-            button.btn.btn-info(type='button') Book Now »
+            button.btn.btn-info(type='button') Check Availability »
 
         div.row.mb-3
           div.col-md-6
@@ -92,10 +91,10 @@ block content
             h3 Executive Suite
             p.lead
               | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
-            button.btn.btn-info(type='button') Book Now »
+            button.btn.btn-info(type='button') Check Availability »
 
     //- Retaurant Options Block
-    div.onevh.mb-0.bg-light
+    div#fooddrinks.onevh.mb-0.bg-light
       div.container
         div.row.pagespacer
         div.row
@@ -111,7 +110,7 @@ block content
             img.img-fluid(src='/images/3.jpg')
 
     //- About Us Block
-    div.onevh.mb-0
+    div#about.onevh.mb-0
       div.container
         div.row.pagespacer
         div.row

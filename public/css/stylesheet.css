@@ -14,18 +14,15 @@
   background-image: url(../images/3.jpg);
   background-size: cover;
 }
-
 .onevh {
   min-height: 100vh;
 }
 .pagespacer {
   padding-top: 9rem;
 }
-
 .bg-light095 {
   background-color: rgba(248, 249, 250, 0.95) !important;
 }
-
 a.bg-light095:focus, a.bg-light095:hover {
   background-color: #dae0e5 !important;
 }

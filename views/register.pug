@@ -6,6 +6,13 @@ block content
     div.onevh.mb-0.background1
       div.container
         div.row.pagespacer
+
+        div.row
+          div.col-md-8
+            h1.display-3 Register
+            p.lead Please fill out your contact details below.
+            p We value your privacy. The information you supply on the below form will be securely stored with us and will never be used for anything more than to manage your bookings.
+
         div.row
           div.col-md-8.bg-light095
             form.pt-3.pb-4
@@ -23,6 +30,7 @@ block content
                   div.col-12.form-group.pl-0.pr-0
                     label.mb-0 Password
                     input.form-control(type='password', name='password')
+                    small Please make sure your password is at least eight characters long and is unique for this site.
                   div.col-12.form-group.pl-0.pr-0
                     label.mb-0 Phone Number
                     input.form-control(type='text', name='phone')
@@ -49,5 +57,6 @@ block content
                     select.form-control
                       option(value='smokeyes') Smoking
                       option(value='smokeno') Non-Smoking
+                    small Although we will do our best, please be aware we may not always be able to accomodate your smoking preferences.
               button.btn.btn-info.btn-block(type='submit') Register
           div.col-4

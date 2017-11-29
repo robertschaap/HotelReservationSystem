@@ -15,3 +15,15 @@ app.listen(myport, function() { console.log(`Now listening on port ${myport}`); 
 app.get('/', function(req, res) {
     res.render('index');
 });
+
+app.get('/availability', function(req, res) {
+    res.render('availability');
+});
+
+app.get('/confirmation', function(req, res) {
+    res.render('confirmation');
+});
+
+app.get('/register', function(req, res) {
+    res.render('register');
+});
