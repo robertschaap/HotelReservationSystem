@@ -1,0 +1,53 @@
+extends layout.pug
+
+block content
+  main(role="main")
+
+    div.onevh.mb-0.background1
+      div.container
+        div.row.pagespacer
+        div.row
+          div.col-md-8.bg-light095
+            form.pt-3.pb-4
+              div.container
+                div.row
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 First Name
+                    input.form-control(type='text', name='firstname')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Last Name
+                    input.form-control(type='text', name='lastname')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 E-Mail
+                    input.form-control(type='text', name='email')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Password
+                    input.form-control(type='password', name='password')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Phone Number
+                    input.form-control(type='text', name='phone')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Address
+                    input.form-control(type='text', name='address')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Zip Code
+                    input.form-control(type='text', name='zipcode')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Country
+                    input.form-control(type='password', name='country')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Passport Number
+                    input.form-control(type='text', name='passport')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Creditcard Number
+                    input.form-control(type='text', name='creditcard')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Room Preference
+                    input.form-control(type='text', name='roompreference')
+                  div.col-12.form-group.pl-0.pr-0
+                    label Smoking preference
+                    select.form-control
+                      option(value='smokeyes') Smoking
+                      option(value='smokeno') Non-Smoking
+              button.btn.btn-info.btn-block(type='submit') Register
+          div.col-4
