@@ -3,22 +3,41 @@ html(lang="en")
   head
     block head
 
-      meta(charset="utf-8")
+      meta(charset='utf-8')
       title Hotel Reservation System
-      meta(name="viewport" content="width=device-width, initial-scale=1")
-      meta(name="author" content="Robert Schaap, Mary Delantar")
-      link(href="css/normalize.css", rel="stylesheet", type="text/css")
-      link(href="css/stylesheet.css", rel="stylesheet", type="text/css")
-      link(rel="appl-touch-icon" href="images/appl-touch-icon.png")
-      link(rel="icon" type="image/png" href="images/favicon.png" sizes="32x32")
+      meta(name='viewport', content='width=device-width, initial-scale=1')
+      meta(name='author', content='Robert Schaap, Mary Delantar')
+      link(href='/css/bootstrap-reboot.css', rel='stylesheet', type='text/css')
+      link(href='/css/bootstrap.css', rel='stylesheet', type='text/css')
+      link(href='/css/stylesheet.css', rel='stylesheet', type='text/css')
+      link(rel='icon', type='image/png', href='/images/favicon.png', sizes='32x32')
+
 
   body
-    header(role="heading")
-      nav(role="navigation")
-      h1
+    header(role='heading')
+      nav.navbar.navbar-expand-md.navbar-light.bg-light095.fixed-top
+        div.container
+          a.navbar-brand(href='/') My Hotel
+          button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarText', aria-controls='navbarText', aria-expanded='false', aria-label='Toggle navigation')
+            span.navbar-toggler-icon
+          div#navbarText.collapse.navbar-collapse
+            ul.navbar-nav.mr-auto
+              li.nav-item
+                a.nav-link(href='#rooms') Rooms
+              li.nav-item
+                a.nav-link(href='#fooddrinks') Food & Drinks
+              li.nav-item
+                a.nav-link(href='#about') About Us
+            ul.navbar-nav.ml-auto
+              li.nav-item
+                a.nav-link(href='#') Log In
+              li.nav-item
+                a.nav-link(href='/register') Register
 
     block content
 
     footer(role="contentinfo")
-    script(src="https://code.jquery.com/jquery-3.2.1.js")
-    script(type="text/javascript", src="scripts/javascript.js")
+    script(src='https://code.jquery.com/jquery-3.2.1.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js', integrity='sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh', crossorigin='anonymous')
+    script(type='text/javascript', src='scripts/bootstrap.js')
+    script(type='text/javascript', src='scripts/javascript.js')

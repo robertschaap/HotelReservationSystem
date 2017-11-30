@@ -153,6 +153,7 @@ app.get('/users/:username', (req,res) => {
   }
 });
 
+
 //ROUTE TO CHECK AVAILABILITY ROUTE
 //User will make will check availabilty 
 app.get('/availability', (req,res) => {
@@ -199,9 +200,6 @@ app.post('/bookings', (req,res) => {
     req.session.user = user;
   })
 });
-
-
-
 
 
 const server = app.listen(3000, () => {

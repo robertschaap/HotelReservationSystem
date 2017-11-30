@@ -3,6 +3,7 @@ extends layout.pug
 block content
   main(role="main")
 
+<<<<<<< HEAD
     //- Signup form
 
     form(action='/register' method="post", autocomplete='off')
@@ -66,3 +67,138 @@ block content
       button(type="submit") Book This Room
 
 
+=======
+    //- Main Welcome Block
+    div.onevh.mb-0.background1
+      div.container
+        div.row.pagespacer
+        div.row
+          div.col-md-6.col-lg-8
+            h1.display-3 Welcome Home
+            p.lead Whether it's leisure or business, our accomodations will be sure to delight you.
+          div.col-md-6.col-lg-4.bg-light095
+
+
+            //- Check Availability Form
+            //- This will display by default
+            form.pt-3.pb-4
+              div.container
+                div.row
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Arrival
+                    input.form-control(type='date', name='arrivaldate')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Departure
+                    input.form-control(type='date', name='departuredate')
+                div.row
+                  div.col-6.form-group.pl-0.pr-1
+                    label.mb-0 Adults
+                    input.form-control(type='number', name='adults')
+                  div.col-6.form-group.pl-1.pr-0
+                    label.mb-0 Children
+                    input.form-control(type='number', name='children')
+              button.btn.btn-info.btn-block(type='submit') Check Availability
+
+
+            //- Log In Form
+            //- This will display only when the login button in the navigation is clicked
+            form.pt-3.pb-4
+              div.container
+                div.row
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 E-mail
+                    input.form-control(type='text', name='email')
+                  div.col-12.form-group.pl-0.pr-0
+                    label.mb-0 Password
+                    input.form-control(type='password', name='password')
+              button.btn.btn-info.btn-block(type='submit') Log In
+
+    //- Rooms Block
+    div#rooms.onevh.mb-0.bg-white
+      div.container
+        div.row.pagespacer
+        div.row
+          div.col
+            h2.display-2 Doze Off
+            p.lead Have a look at one of our rooms
+
+        div.row.mb-3
+          div.col-md-6.order-md-2
+            img.img-fluid(src='/images/2.jpg')
+          div.col-md-6.order-md-1
+            h3 Standard Room
+            p.lead
+              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+            button.btn.btn-info(type='button') Check Availability »
+
+        div.row.mb-3
+          div.col-md-6
+            img.img-fluid(src='/images/2.jpg')
+          div.col-md-6
+            h3 Deluxe Room
+            p.lead
+              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+            button.btn.btn-info(type='button') Check Availability »
+
+        div.row.mb-3
+          div.col-md-6.order-md-2
+            img.img-fluid(src='/images/2.jpg')
+          div.col-md-6.order-md-1
+            h3 Junior Suite
+            p.lead
+              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+            button.btn.btn-info(type='button') Check Availability »
+
+        div.row.mb-3
+          div.col-md-6
+            img.img-fluid(src='/images/2.jpg')
+          div.col-md-6
+            h3 Executive Suite
+            p.lead
+              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+            button.btn.btn-info(type='button') Check Availability »
+
+    //- Retaurant Options Block
+    div#fooddrinks.onevh.mb-0.bg-light
+      div.container
+        div.row.pagespacer
+        div.row
+          div.col
+            h2.display-3 Wining & Dining
+        div.row
+          div.col-md-6
+            p.lead
+              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+            p.lead
+              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+          div.col-md-6
+            img.img-fluid(src='/images/3.jpg')
+
+    //- About Us Block
+    div#about.onevh.mb-0
+      div.container
+        div.row.pagespacer
+        div.row
+          div.col-md-6
+            h2.display-3 About Us
+            p.lead Some bs about how amazing you are and adress/contact stuff
+            address
+              strong An Amazing Hotel
+              br
+              | Some Street Somewhere
+              br
+              | Amazingstreet 1
+              br
+              | The Netherlands
+              br
+            address
+              strong Contact Us
+              br
+              | +31 (0) 20 000 9001
+              br
+              | contact@amazinghotel.com
+              br
+              | also add google map below
+          div.col-md-6
+            img.img-fluid(src='/images/4.jpg')
+>>>>>>> d04a04db03ad98083e97ed91a573f620bf54c6ea

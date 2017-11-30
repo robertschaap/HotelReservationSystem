@@ -8,20 +8,19 @@
     <link href="css/bootstrap-reboot.css" rel="stylesheet" type="text/css">
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="css/stylesheet.css" rel="stylesheet" type="text/css">
-    <link rel="appl-touch-icon" href="images/appl-touch-icon.png">
     <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
   </head>
   <body>
-    
+
     <header role="heading">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light095 fixed-top">
           <div class="container">
             <a class="navbar-brand" href="#">My Hotel</a>
-            
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarText">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -50,7 +49,7 @@
   </body>
 </html>
 <main role="main">
-  
+
   <div class="onevh mb-0 background1">
     <div class="container">
       <div class="row pagespacer">
@@ -58,11 +57,13 @@
       <div class="row">
         <div class="col-8">
           <h1 class="display-3">Welcome Home</h1>
-          <p class="lead">Whether it's leisure or business, our accomodations will be sure to delight you.</p></div>
-        
-        <div class="col-4 bg-light">
+          <p class="lead">Whether it's leisure or business, our accomodations will be sure to delight you.</p>
+        </div>
+
+        <div class="col-4 bg-light095">
+
+          <!-- Check Availability Form -->
           <form class="pt-3 pb-4">
-            
             <div class="container">
               <div class="row">
                 <div class="col-12 form-group pl-0 pr-0">
@@ -86,14 +87,33 @@
                 </div>
               </div>
             </div>
-            
+
             <button type="submit" class="btn btn-info btn-block">Check Availability</button>
           </form>
+
+          <!-- Login form, this will be hidden with jQuery and toggle the availability form once login is clicked-->
+          <form class="pt-3 pb-4">
+            <div class="container">
+              <div class="row">
+                <div class="col-12 form-group pl-0 pr-0">
+                  <label class="mb-0">E-mail</label>
+                  <input type="text" class="form-control" name="email">
+                </div>
+                <div class="col-12 form-group pl-0 pr-0">
+                  <label class="mb-0">Password</label>
+                  <input type="password" class="form-control" name="password">
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-info btn-block">Log In</button>
+          </form>
+
         </div>
       </div>
     </div>
   </div>
- 
+
   <div class="onevh mb-0 bg-white">
     <div class="container">
       <div class="row pagespacer">
@@ -104,7 +124,7 @@
           <p class="lead">Have a look at one of our rooms</p>
         </div>
       </div>
-      
+
       <div class="row mb-3">
         <div class="col-6">
           <h3>Standard Room</h3>
@@ -125,7 +145,7 @@
           <button type="button" class="btn btn-info">Book Now &raquo;</button>
         </div>
       </div>
-      
+
       <div class="row mb-3">
         <div class="col-6">
           <h3>Junior Suite</h3>
@@ -146,15 +166,15 @@
           <button type="button" class="btn btn-info">Book Now &raquo;</button>
         </div>
       </div>
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
     </div>
   </div>
-  
+
   <div class="onevh mb-0 bg-light">
     <div class="container">
       <div class="row pagespacer">
@@ -164,7 +184,7 @@
           <h2 class="display-3">Wining & Dining</h2>
         </div>
       </div>
-      
+
       <div class="row">
         <div class="col">
           <p class="lead">Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.</p>
@@ -176,7 +196,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="onevh mb-0">
     <div class="container">
       <div class="row pagespacer">
@@ -204,7 +224,7 @@
       </div>
     </div>
   </div>
-  
+
   <footer role="contentinfo"></footer>
   <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
