@@ -10,13 +10,24 @@ block content
         div.row
           div.col
             h1.display-3 Confirmation
-            p.lead Thank you for booking with us!
-            p Please take a moment to double-check your booking.
+
+            div.bg-light
+              div.p-3
+                p.lead Thank you for booking with us!
+                p Please take a moment to double-check your booking below. If you still have questions at this time, please do not hesitate to contact us via the contact details provided below. When you're done, please click the Confirm This Booking Button
+
+                p.lead Trip Details
+                P Going nowhere fst
+
+                p.lead Personal Details
+                P No personal life
 
             //- Display Result of Booking
 
             //- Booking Room Form
-            form.pt-3.pb-4
-              button.btn.btn-info(type="submit") Cancel This Booking
+            form(action="/bookings" method="post").d-inline-block.pt-3.pb-4.pr-2
+              button.btn.btn-success(type="submit") Confirm This Booking
+            form(action="/cancel" method="post").d-inline-block.pt-3.pb-4
+              button.btn.btn-danger(type="submit") Cancel This Booking
 
           div.col-md-4
