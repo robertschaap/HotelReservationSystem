@@ -55,7 +55,7 @@ const Rooms = sequelize.define('rooms', {
 //RESERVATION BOOKING MODEL DEFINITION
 const Bookings = sequelize.define('bookings', {
     confirmationNumber: { type: Sequelize.INTEGER,
-    primaryKey: false,
+    primaryKey: false, 
     autoIncrement: false },
     userId: { type: Sequelize.STRING, unique: false },
     dateBooked: { type: Sequelize.DATE, default: Date },
@@ -153,9 +153,8 @@ app.get('/users/:username', (req,res) => {
   }
 });
 
-
 //ROUTE TO CHECK AVAILABILITY ROUTE
-//User will make will check availabilty
+//User will make will check availabilty 
 app.get('/availability', (req,res) => {
   res.render('availability');
 })
@@ -200,6 +199,9 @@ app.post('/bookings', (req,res) => {
     req.session.user = user;
   })
 });
+
+
+
 
 
 const server = app.listen(3000, () => {
