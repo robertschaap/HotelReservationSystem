@@ -91,7 +91,7 @@ app.post('/login', (req, res) => {
     res.redirect('/?message=' + encodeURIComponent("Please fill in your username."))
     return;                                                //checking if user has filled in both fields
   }
-  if (req.body.email.length === 0) {
+  if (req.body.password.length === 0) {
     res.redirect('/?message=' + encodeURIComponent("Please fill in your password."))
     return;
   }
