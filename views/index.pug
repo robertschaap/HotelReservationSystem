@@ -11,34 +11,37 @@ block content
           div.col-md-6.col-lg-8
             h1.display-3 Welcome Home
             p.lead Whether it's leisure or business, our accomodations will be sure to delight you.
-          div.col-md-6.col-lg-4.bg-light095
+            hr
+            p.pt-3 Hotel Delantar is a boutique hotel situated in the bustling center of Amsterdam. Located in the famous Rokin, the hotel offers over 50 spacious rooms with excellent on-site facilities. Have a look around and be delighted!
+          div.col-md-6.col-lg-4.p-0
 
 
             //- Check Availability Form
             //- This will display by default
             div#availability
-              form(action="/availability" method="post").pt-3.pb-4
+
+              form(action="/availability" method="post").p-3.bg-light095
                 div.container
                   div.row
                     div.col-12.form-group.pl-0.pr-0
                       label.mb-0 Arrival
-                      input.form-control.onerem(type='date', name='arrivaldate')
+                      input.form-control.onerem(type='date', name='arrivaldate' min='2017-12-01')
                     div.col-12.form-group.pl-0.pr-0
                       label.mb-0 Departure
-                      input.form-control.onerem(type='date', name='departuredate')
+                      input.form-control.onerem(type='date', name='departuredate' min='2017-12-01')
                   div.row
                     div.col-6.form-group.pl-0.pr-1
                       label.mb-0 Adults
-                      input.form-control(type='number', name='adults')
+                      input.form-control(type='number', name='adults' min='1' max='2')
                     div.col-6.form-group.pl-1.pr-0
                       label.mb-0 Children
-                      input.form-control(type='number', name='children')
+                      input.form-control(type='number', name='children' min='1' max='2')
                 button.btn.btn-info.btn-block(type='submit') Check Availability
 
             //- Log In Form
             //- This will display only when the login button in the navigation is clicked
             div#login
-              form(action="/login" method="post").pt-3.pb-4
+              form(action="/login" method="post").p-3.bg-light095
                 div.container
                   div.row
                     div.col-12.form-group.pl-0.pr-0
@@ -46,7 +49,7 @@ block content
                       input.form-control(type='text', name='email')
                     div.col-12.form-group.pl-0.pr-0
                       label.mb-0 Password
-                      input.form-control(type='password', name='password')
+                      input.form-control(type='password', name='password' minlength='')
                 button.btn.btn-info.btn-block(type='submit') Log In
 
     //- Rooms Block
@@ -64,7 +67,7 @@ block content
           div.col-md-6.order-md-1
             h3 Standard Room
             p.lead
-              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+              | There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort.
             button.btn.btn-info(type='button') Check Availability »
 
         div.row.mb-3
@@ -73,7 +76,7 @@ block content
           div.col-md-6
             h3 Deluxe Room
             p.lead
-              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+              | Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included.
             button.btn.btn-info(type='button') Check Availability »
 
         div.row.mb-3
@@ -82,7 +85,7 @@ block content
           div.col-md-6.order-md-1
             h3 Junior Suite
             p.lead
-              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+              | Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size.
             button.btn.btn-info(type='button') Check Availability »
 
         div.row.mb-3
@@ -91,7 +94,7 @@ block content
           div.col-md-6
             h3 Executive Suite
             p.lead
-              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+              | Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city.
             button.btn.btn-info(type='button') Check Availability »
 
         div.row.pagespacer
@@ -106,9 +109,11 @@ block content
         div.row
           div.col-md-6
             p.lead
-              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+              | We are renowned locally for our great food and drinks options.
             p.lead
-              | Lorem ipsum dolor sit amet, novum integre omnesque mel ex, per salutatus patrioque ea. Purto dignissim pri eu, mei in numquam vituperatoribus. Te mea quem veri, mei ad ferri officiis. Vix et simul laboramus dissentiet. Mel eripuit deseruisse ad, nisl timeam tamquam ei nam. Ut vel ferri reformidans necessitatibus, mel in oratio eligendi, cu semper intellegam eos.
+              | After a long day exploring everything our city has to offer, why not sit down for a bite in our restaurant. We offer breakfast, lunch and dinners in a relaxed, comfortable setting. Our chefs can prepare a wide variety of local and regional dishes, but feel free to aks if you are missing anything on the menu.
+            p.lead
+              | Ready for a night-cap or a refreshing drink right before dinner? Head over to our lounge bar. It's not the biggest in the business but definitely the cosiest. Careful, our bartenders like their music as chilled as the cocktail glasses.
           div.col-md-6
             img.img-fluid(src='/images/3.jpg')
 
@@ -121,13 +126,13 @@ block content
         div.row
           div.col-md-6
             h2.display-3 About Us
-            p.lead Some bs about how amazing you are and adress/contact stuff
+            p.lead Thank you for taking the time to visit and consider us as an option for your next trip. If you have any questions about our hotel or our services, please do not hesitate to reach out to us - the phone never rings more than thrice.
             address
-              strong An Amazing Hotel
+              strong Hotel Delantar
               br
-              | Some Street Somewhere
+              | Rokin 210
               br
-              | Amazingstreet 1
+              | 1012 MD Amsterdam
               br
               | The Netherlands
               br
@@ -136,11 +141,9 @@ block content
               br
               | +31 (0) 20 000 9001
               br
-              | contact@amazinghotel.com
-              br
-              | also add google map below
+              | contact@hoteldelantar.com
+
           div.col-md-6
             img.img-fluid(src='/images/4.jpg')
 
         div.row.pagespacer
-

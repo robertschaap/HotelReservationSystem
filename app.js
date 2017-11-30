@@ -152,7 +152,6 @@ app.get('/users/:username', (req,res) => {
   }
 });
 
-
 //ROUTE TO CHECK AVAILABILITY ROUTE
 //User will make will check availabilty
 app.get('/availability', (req,res) => {
@@ -185,7 +184,6 @@ app.get('/confirmation', (req,res) => {
 app.post('/confirmation', (req,res) => {
   res.redirect('/bookings');
 })
-
 
 //TO BOOKINGS ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
 app.get('/bookings', (req,res) => {
