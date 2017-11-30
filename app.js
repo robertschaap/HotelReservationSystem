@@ -7,9 +7,8 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 //configuring and initializing modules
 const app = express();
-app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
-app.use(express.static(__dirname + '/../public'));
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 const sequelize = new Sequelize('reservation', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
     host: 'localhost',
@@ -178,6 +177,15 @@ app.post('/availability', (req,res) => {
 //     res.redirect(`/users/${user.bookings}`)
 //   })
 // });
+
+app.get('/confirmation', (req,res) => {
+  res.render('confirmation');
+})
+
+app.post('/confirmation', (req,res) => {
+  res.redirect('/bookings');
+})
+
 
 //TO BOOKINGS ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
 app.get('/bookings', (req,res) => {

@@ -3,71 +3,6 @@ extends layout.pug
 block content
   main(role="main")
 
-<<<<<<< HEAD
-    //- Signup form
-
-    form(action='/register' method="post", autocomplete='off')
-      label First Name
-      input(type="text", name="firstname")
-      label Last Name
-      input(type="text", name="lastname")
-      label E-mail
-      input(type="text", name="email")
-      label Password
-      input(type="password", name="password")
-      label Phone Number
-      input(type="text", name="phone")
-      label Address
-      input(type="text", name="address")
-      label Zip Code
-      input(type="text", name="zipcode")
-      label Country
-      input(type="text", name="passport")
-      label Passport Number
-      input(type="text", name="creditcard")
-      label Creditcard Number
-      input(type="text", name="country")
-      label Roomß preference
-      select
-        option(value="smokeyes") Smoking
-        option(value="smokeno") Non-Smoking
-      button(type="submit") Register
-
-      hr
-
-    //- Login form
-    form(action='/login' method="post")
-      label E-mail
-      input(type="text", name="email")
-      label Password
-      input(type="password", name="password")
-      button(type="submit") Log In
-
-      hr
-
-    //- Check availability form
-    form(action="availability" method="post")
-      label Arrival Date
-      input(type="date" name="arrivaldate")
-      label Departure Date
-      input(type="date" name="departuredate")
-      label Adults
-      input(type="number" name="adults")
-      label Children
-      input(type="number" name="children")
-      button(type="submit") Check Availability
-      <input type="text" id="arrive" tabindex="2" class="calendar-field" autocomplete="off" placeholder="MMM / DD / YYYY">
-
-      <input onclick="mboxTrack('FindHotels_Button_Track');" type="submit" value="Check Availability" tabindex="6" class="at-element-marker">
-
-      hr
-
-    //- Booking form
-    form(action="bookings" method="post")
-      button(type="submit") Book This Room
-
-
-=======
     //- Main Welcome Block
     div.onevh.mb-0.background1
       div.container
@@ -201,4 +136,4 @@ block content
               | also add google map below
           div.col-md-6
             img.img-fluid(src='/images/4.jpg')
->>>>>>> d04a04db03ad98083e97ed91a573f620bf54c6ea
+
