@@ -17,6 +17,9 @@
 .onevh {
   min-height: 100vh;
 }
+.onerem {
+  min-height: 2.5rem;
+}
 .pagespacer {
   padding-top: 9rem;
 }
@@ -26,6 +29,15 @@
 a.bg-light095:focus, a.bg-light095:hover {
   background-color: #dae0e5 !important;
 }
+
+/*Forms*/
+#availability {
+  display: initial;
+}
+#login {
+  display: none;
+}
+
 /*Header & Footer*/
 footer {
   min-height: 6rem;

@@ -16,37 +16,38 @@ block content
 
             //- Check Availability Form
             //- This will display by default
-            form.pt-3.pb-4
-              div.container
-                div.row
-                  div.col-12.form-group.pl-0.pr-0
-                    label.mb-0 Arrival
-                    input.form-control(type='date', name='arrivaldate')
-                  div.col-12.form-group.pl-0.pr-0
-                    label.mb-0 Departure
-                    input.form-control(type='date', name='departuredate')
-                div.row
-                  div.col-6.form-group.pl-0.pr-1
-                    label.mb-0 Adults
-                    input.form-control(type='number', name='adults')
-                  div.col-6.form-group.pl-1.pr-0
-                    label.mb-0 Children
-                    input.form-control(type='number', name='children')
-              button.btn.btn-info.btn-block(type='submit') Check Availability
-
+            div#availability
+              form(action="/availability" method="post").pt-3.pb-4
+                div.container
+                  div.row
+                    div.col-12.form-group.pl-0.pr-0
+                      label.mb-0 Arrival
+                      input.form-control.onerem(type='date', name='arrivaldate')
+                    div.col-12.form-group.pl-0.pr-0
+                      label.mb-0 Departure
+                      input.form-control.onerem(type='date', name='departuredate')
+                  div.row
+                    div.col-6.form-group.pl-0.pr-1
+                      label.mb-0 Adults
+                      input.form-control(type='number', name='adults')
+                    div.col-6.form-group.pl-1.pr-0
+                      label.mb-0 Children
+                      input.form-control(type='number', name='children')
+                button.btn.btn-info.btn-block(type='submit') Check Availability
 
             //- Log In Form
             //- This will display only when the login button in the navigation is clicked
-            form.pt-3.pb-4
-              div.container
-                div.row
-                  div.col-12.form-group.pl-0.pr-0
-                    label.mb-0 E-mail
-                    input.form-control(type='text', name='email')
-                  div.col-12.form-group.pl-0.pr-0
-                    label.mb-0 Password
-                    input.form-control(type='password', name='password')
-              button.btn.btn-info.btn-block(type='submit') Log In
+            div#login
+              form(action="/login" method="post").pt-3.pb-4
+                div.container
+                  div.row
+                    div.col-12.form-group.pl-0.pr-0
+                      label.mb-0 E-mail
+                      input.form-control(type='text', name='email')
+                    div.col-12.form-group.pl-0.pr-0
+                      label.mb-0 Password
+                      input.form-control(type='password', name='password')
+                button.btn.btn-info.btn-block(type='submit') Log In
 
     //- Rooms Block
     div#rooms.onevh.mb-0.bg-white
