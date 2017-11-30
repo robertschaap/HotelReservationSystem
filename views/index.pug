@@ -4,7 +4,8 @@ block content
   main(role="main")
 
     //- Signup form
-    form(action="/" method="post")
+
+    form(action='/register' method="post", autocomplete='off')
       label First Name
       input(type="text", name="firstname")
       label Last Name
@@ -20,12 +21,12 @@ block content
       label Zip Code
       input(type="text", name="zipcode")
       label Country
-      input(type="text", name="country")
+      input(type="text", name="passport")
       label Passport Number
-      input(type="text", name="country")
+      input(type="text", name="creditcard")
       label Creditcard Number
       input(type="text", name="country")
-      label Smoking preference
+      label Roomß preference
       select
         option(value="smokeyes") Smoking
         option(value="smokeno") Non-Smoking
@@ -34,7 +35,7 @@ block content
       hr
 
     //- Login form
-    form(action="/" method="post")
+    form(action='/login' method="post")
       label E-mail
       input(type="text", name="email")
       label Password
@@ -44,7 +45,7 @@ block content
       hr
 
     //- Check availability form
-    form(action="/" method="post")
+    form(action="availability" method="post")
       label Arrival Date
       input(type="date" name="arrivaldate")
       label Departure Date
@@ -54,9 +55,14 @@ block content
       label Children
       input(type="number" name="children")
       button(type="submit") Check Availability
+      <input type="text" id="arrive" tabindex="2" class="calendar-field" autocomplete="off" placeholder="MMM / DD / YYYY">
+
+      <input onclick="mboxTrack('FindHotels_Button_Track');" type="submit" value="Check Availability" tabindex="6" class="at-element-marker">
 
       hr
 
     //- Booking form
-    form(action="/" method="post")
-    button(type="submit") Book This Room
+    form(action="bookings" method="post")
+      button(type="submit") Book This Room
+
+
