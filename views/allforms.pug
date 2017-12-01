@@ -34,7 +34,7 @@ block content
       hr
 
     //- Login form
-    form(action="/" method="post")
+    form(action="register" method="post")
       label E-mail
       input(type="text", name="email")
       label Password
@@ -44,7 +44,7 @@ block content
       hr
 
     //- Check availability form
-    form(action="/" method="post")
+    form(action="availability" method="post")
       label Arrival Date
       input(type="date" name="arrivaldate")
       label Departure Date
@@ -58,5 +58,5 @@ block content
       hr
 
     //- Booking form
-    form(action="/" method="post")
+    form(action="bookings" method="post")
     button(type="submit") Book This Room
