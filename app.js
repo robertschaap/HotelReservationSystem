@@ -51,20 +51,19 @@ const Rooms = sequelize.define('rooms', {
     roomNumber: { type: Sequelize.STRING, unique: false },
     roomType: { type: Sequelize.STRING, notNull: false },
     roomRate: { type: Sequelize.STRING, notNull: false },
+    description:{type: Sequelize.STRING, notNull: false}
+
 });
 
 
 //RESERVATION BOOKING MODEL DEFINITION (JOINT TABLE)
 const Bookings = sequelize.define('bookings', {
-    confirmationNumber: { type: Sequelize.INTEGER,
-    primaryKey: false,
-    autoIncrement: false },
-    userId: { type: Sequelize.STRING, unique: false },
-    dateBooked: { type: Sequelize.DATE, default: Date },
+    confirmationNumber: { type: Sequelize.INTEGER},
     dateCheckin: { type: Sequelize.DATE, notNull: false },
     dateCheckout: { type: Sequelize.DATE, notNull: false },
     roomType: { type: Sequelize.STRING, notNull: false },
-    roomNumber: { type: Sequelize.STRING, unique: false }
+    roomNumber: { type: Sequelize.STRING, unique: false },
+    description:{type: Sequelize.STRING, notNull: false}
 
 });
 
@@ -72,30 +71,99 @@ const Bookings = sequelize.define('bookings', {
 sequelize.sync({force: true})
 .then(() => {
   Rooms.create({
-    roomType: "01",
-    roomPreference: "Queen",
+    roomNumber: "01",
+    roomType: "Executive Suite",
     bedPreference: "Smoking",
-    roomRate: "250"
-
+    roomRate: "1500",
+    description: "Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city"
   })
 })
 
 .then(() => {
   Rooms.create({
-    roomType: "02",
-    roomPreference: "Queen",
+    roomNumber: "02",
+    roomType: "Jr Suite",
     bedPreference: "Non-Smoking",
-    roomRate: "250"
+    roomRate: "650",
+    description: "Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size."
 
   })
 })
 
 .then(() => {
   Rooms.create({
-    roomType: "03",
-    roomPreference: "Queen",
+    roomNumber: "03",
+    roomType: "Deluxe",
     bedPreference: "Smoking",
-    roomRate: "250"
+    roomRate: "300",
+    description:"Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included."
+
+  })
+})
+
+.then(() => {
+  Rooms.create({
+    roomNumber: "04",
+    roomType: "Standard Twin",
+    bedPreference: "Smoking",
+    roomRate: "250",
+    description: "There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort. "
+
+  })
+})
+
+.then(() => {
+  Bookings.create({
+    bookingId:1,
+    userId:1,
+    roomId:1,
+    dateCheckin: "2017-12-01",
+    dateCheckout:"2017-12-03 ",
+    roomType:"Executive Suite",
+    roomNumber:"01",
+    description:"Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city."
+
+  })
+})
+
+.then(() => {
+  Bookings.create({
+    bookings_userId:1,
+    userId:1,
+    roomId:1,
+    dateCheckin: "2017-12-01",
+    dateCheckout:"2017-12-03 ",
+    roomType:"Jr Suite",
+    roomNumber:"02",
+    description:"Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size."
+
+  })
+})
+
+.then(() => {
+  Bookings.create({
+  bookings_userId:1,  
+  userId:1,
+  roomId:1,  
+  dateCheckin: "2017-12-01",
+  dateCheckout:"2017-12-03 ",
+  roomType: "Deluxe",
+  roomNumber: "03",
+  description: "Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included."
+
+  })
+})
+
+.then(() => {
+  Bookings.create({
+    bookingId:1,
+    userId:1,
+    roomId:1,
+    dateCheckin: "2017-12-01",
+    dateCheckout:"2017-12-03 ",
+    roomType:"Standard Twin",
+    roomNumber:"04",
+    description:"There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort. "
 
   })
 })
