@@ -193,10 +193,17 @@ app.get('/profile', (req,res) => {
 //   }
 // });
 
+<<<<<<< HEAD
 //ROUTE AVAILABILITY
 //User will check availabilty
 app.get('/availabilty', (req, res) =>{
   res.render('availabilty');
+=======
+//ROUTE TO CHECK AVAILABILITY ROUTE
+//User will make will check availabilty
+app.get('/availability', (req,res) => {
+  res.render('availability');
+>>>>>>> e09e707cc59e7cbcdad1a80fe056c123de874261
 })
 
 //creating new reservation as per avaialability in database and starting session for the user and sending them to their profile
@@ -245,6 +252,19 @@ app.get('/confirmation', (req,res) => {
 
 //creating confirmation in database and starting session for the user and sending them to their profile
 app.post('/confirmation', (req,res) => {
+<<<<<<< HEAD
+=======
+  res.redirect('/bookings');
+})
+
+//TO BOOKINGS ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
+app.get('/bookings', (req,res) => {
+  res.render('bookings');
+})
+
+//creating new reservation in database and starting session for the user and sending them to their profile
+app.post('/bookings', (req,res) => {
+>>>>>>> e09e707cc59e7cbcdad1a80fe056c123de874261
   User.create({
     firstname: req.body.firstname,
     lastname: req.body.lastname,

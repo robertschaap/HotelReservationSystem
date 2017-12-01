@@ -14,14 +14,11 @@
   background-image: url(../images/3.jpg);
   background-size: cover;
 }
-.onevh {
-  min-height: 100vh;
-}
 .onerem {
   min-height: 2.5rem;
 }
 .pagespacer {
-  padding-top: 9rem;
+  padding-top: 4rem;
 }
 .bg-light095 {
   background-color: rgba(248, 249, 250, 0.95) !important;
@@ -45,6 +42,16 @@ footer {
 }
 
 /*Media Queries*/
-@media () {
+@media (min-width: 576px) {
+  .onevh {
+    min-height: 100vh;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .pagespacer {
+    padding-top: 9rem;
+  }
 
 }

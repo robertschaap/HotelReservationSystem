@@ -4,7 +4,7 @@ html(lang="en")
     block head
 
       meta(charset='utf-8')
-      title Hotel Reservation System
+      title Hotel Delantar
       meta(name='viewport', content='width=device-width, initial-scale=1')
       meta(name='author', content='Robert Schaap, Mary Delantar')
       link(href='/css/bootstrap-reboot.css', rel='stylesheet', type='text/css')
@@ -17,26 +17,30 @@ html(lang="en")
     header(role='heading')
       nav.navbar.navbar-expand-md.navbar-light.bg-light095.fixed-top
         div.container
-          a.navbar-brand(href='/') My Hotel
+          a.navbar-brand(href='/') Hotel Delantar
           button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarText', aria-controls='navbarText', aria-expanded='false', aria-label='Toggle navigation')
             span.navbar-toggler-icon
           div#navbarText.collapse.navbar-collapse
             ul.navbar-nav.mr-auto
               li.nav-item
-                a.nav-link(href='#rooms') Rooms
+                a.nav-link(href='/#rooms') Rooms
               li.nav-item
-                a.nav-link(href='#fooddrinks') Food & Drinks
+                a.nav-link(href='/#fooddrinks') Food & Drinks
               li.nav-item
-                a.nav-link(href='#about') About Us
+                a.nav-link(href='/#about') About Us
             ul.navbar-nav.ml-auto
               li.nav-item
-                a#navlogin.nav-link(href='#') Log In
+                a#navlogin.nav-link(href='/#loginredir') Log In
               li.nav-item
                 a.nav-link(href='/register') Register
 
     block content
 
     footer(role="contentinfo")
+      div.container.pt-3.pb-3
+        p.text-light.mb-0 Hotel Reservation Systems Inc. 2017
+        p.text-light.mb-0 This site is a demonstration of the HRS Inc. Hotel Reservation System.
+        p.text-light.mb-0 For enquiries please contact us at enquiries@hotelreservationsystems.co.sp
     script(src='https://code.jquery.com/jquery-3.2.1.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js', integrity='sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh', crossorigin='anonymous')
     script(type='text/javascript', src='scripts/bootstrap.js')
