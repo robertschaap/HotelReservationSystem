@@ -50,7 +50,10 @@ const User = sequelize.define('users', {
 const Rooms = sequelize.define('rooms', {
     roomNumber: { type: Sequelize.STRING, unique: false },
     roomType: { type: Sequelize.STRING, notNull: false },
+    roomPreference: { type: Sequelize.STRING, notNull: false },
+    bedPreference: { type: Sequelize.STRING, notNull: false },
     roomRate: { type: Sequelize.STRING, notNull: false },
+    roomAvailability:{ type: Sequelize.BOOLEAN, default: true}
 });
 
 
@@ -68,37 +71,19 @@ const Bookings = sequelize.define('bookings', {
 
 });
 
-//syncing database and manually inserting in Postgress 
-sequelize.sync({force: true})
-.then(() => {
-  Rooms.create({
-    roomType: "01",
-    roomPreference: "Queen",
-    bedPreference: "Smoking",
-    roomRate: "250"
-
+//syncing models in database
+sequelize.sync({force: true }).then(() => {
+  User.create({
+    firstname: 'p',
+    lastname: 'p',
+    email: 'p',
+    phone: 'p',
+    address: 'p',
+    passport: 'p',
+    creditcard: 'p',
+    password: 'p'
   })
-})
-
-.then(() => {
-  Rooms.create({
-    roomType: "02",
-    roomPreference: "Queen",
-    bedPreference: "Non-Smoking",
-    roomRate: "250"
-
-  })
-})
-
-.then(() => {
-  Rooms.create({
-    roomType: "03",
-    roomPreference: "Queen",
-    bedPreference: "Smoking",
-    roomRate: "250"
-
-  })
-})
+});
 
 // TABLES RELATIONSHIP/ASSOCIATION (for Many to Many Relationship)
 User.belongsToMany(Rooms, { through: Bookings });
@@ -204,25 +189,31 @@ app.get('/profile', (req,res) => {
 app.get('/availability', (req,res) => {
   res.render('availability');
 })
-// roomType: "03",
-//     roomPreference: "Queen",
-//     bedPreference: "Smoking"
-//     roomRate: " 250"
 
 //creating new reservation as per avaialability in database and starting session for the user and sending them to their profile
 app.post('/availability', (req,res) => {
   const user = req.session.user;
-  let arrivaldate = req.body.arrivaldate
-  let departuredate = req.body.departuredate
+  const roomAvailability = req.body.roomAvailability;
+  const body = req.body.body;
 
-  Rooms.findAll()
-  .then((result) => {
-    console.log(result)
-    res.render('availability', {query: result});
+  Rooms.findAll({
+    where: {
+      roomAvailability: true
+    }
   })
-//   .catch(error => {
-//     console.error(error);
-//   })
+  .then(() => {
+    return user.RoomsAvailability({
+      dateBooked: req.body.dateBooked,
+      dateCheckin: req.body.dateCheckin,
+      dateCheckout:req.body.dateCheckout,
+    })
+  })
+  .then(() => {
+    res.redirect('/roomAvailability');
+  })
+  .catch(error => {
+    console.error(error);
+  })
 });
 
 //GET BOOKINGS ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
