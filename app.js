@@ -23,15 +23,14 @@ const sequelize = new Sequelize('reservation', process.env.POSTGRES_USER, proces
 //SESSIONS
 app.use(session({
     store:new SequelizeStore({
-    db:sequelize,
-    checkExpirationInterval:30 * 60 * 1000,//interval at which to cleanup expired sessions in milliseconds
-    expiration:24 * 60 * 60 * 1000,//maximum age (in milliseconds) of a valid session.
-    )},
+      db:sequelize,
+      checkExpirationInterval:30 * 60 * 1000,//interval at which to cleanup expired sessions in milliseconds
+      expiration:24 * 60 * 60 * 1000,//maximum age (in milliseconds) of a valid session.
+    }),
     secret: "whatever secret for user",
     saveUninitialized: true,
     resave: false,
-    // proxy: true,
-    })
+    // proxy: true, 
 }));
 
 //MODEL CONFIGURATION
@@ -117,12 +116,8 @@ app.post('/login', (req, res) => {
     bcrypt.compare(password,hash)
     .then((result) => {
       if (user !== null && password === user.password) {
-    }
-    
-          
-      
-      res.redirect(`/users/${user.lastname}`);          //if they exist and info is correct, start session for user
-    } else {
+        res.redirect(`/users/${user.lastname}`);          //if they exist and info is correct, start session for user
+      } else {
       res.redirect('/?message=' + encodeURIComponent("Invalid email or password.")); //if incorrect showing error to user
     }
   })
@@ -193,17 +188,10 @@ app.get('/profile', (req,res) => {
 //   }
 // });
 
-<<<<<<< HEAD
-//ROUTE AVAILABILITY
-//User will check availabilty
-app.get('/availabilty', (req, res) =>{
-  res.render('availabilty');
-=======
 //ROUTE TO CHECK AVAILABILITY ROUTE
 //User will make will check availabilty
 app.get('/availability', (req,res) => {
   res.render('availability');
->>>>>>> e09e707cc59e7cbcdad1a80fe056c123de874261
 })
 
 //creating new reservation as per avaialability in database and starting session for the user and sending them to their profile
@@ -214,16 +202,17 @@ app.post('/availability', (req,res) => { // check with Robert weather post or ge
   Rooms.findall({
     where:{roomAvailability:boolean}
   })
-  .then (() =>){
+  .then (() => {
     return user.RoomsAvailability({
     dateBooked: req.body.dateBooked,
     dateCheckin: req.body.dateCheckin,
     dateCheckout:req.body.dateCheckout,
     roomNumber: req.body.roomNumber,
     })
-    .then (()res.redirect('/roomAvailability') //check with Robert how to render after check availability
-    .catch(error =>{console.error(error)})
-  }
+    .then (()=>{
+      res.redirect('/roomAvailability')} //check with Robert how to render after check availability
+    .catch(error =>{console.error(error)
+    }))
 
 //GET BOOKINGS ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
 app.get('/bookings', (req,res) => {
