@@ -65,6 +65,9 @@ const Bookings = sequelize.define('bookings', {
 });
 
 // TABLES RELATIONSHIP/ASSOCIATION (for Many to Many Relationship)
+// Future note - if join table is not just linking IDs but also adding date, force
+// a primary key on the table and manually set the foreign keys or the model will automatically
+// restrain itself on the last association.
 Users.belongsToMany(Rooms, { through: { model: Bookings, unique: false}, foreignKey: 'userId' });
 Rooms.belongsToMany(Users, { through: { model: Bookings, unique: false}, foreignKey: 'roomId' });
 
