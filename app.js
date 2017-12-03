@@ -1,15 +1,16 @@
 //requiring all used modules, initializing express
 const express = require('express');
+const app = express();
+const myport = process.env.PORT || 3000;
+
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const bcrypt = require('bcrypt');
-const myport = process.env.PORT || 3000;
 // const nodemailer = require('nodemailer');
 
 //configuring and initializing modules
-const app = express();
 app.set('view engine', 'pug');
 app.use(express.static('public'));
 app.use( bodyParser.urlencoded({ extended: true }) );
@@ -35,143 +36,59 @@ app.use(session({
 );
 
 //MODEL CONFIGURATION
-const User = sequelize.define('users', {
-    firstname: { type: Sequelize.STRING, notNull: false },
-    lastname: { type: Sequelize.STRING, notNull: false },
-    email: { type: Sequelize.STRING, unique: false },
-    phone: { type: Sequelize.STRING, notNull: false },
-    address: { type: Sequelize.STRING, notNull: false },
-    passport: { type: Sequelize.STRING, notNull: false },
-    creditcard: { type: Sequelize.STRING, notNull: false },
+const Users = sequelize.define('users', {
+    firstname: { type: Sequelize.STRING },
+    lastname: { type: Sequelize.STRING },
+    email: { type: Sequelize.STRING },
+    phone: { type: Sequelize.STRING },
+    address: { type: Sequelize.STRING },
+    passport: { type: Sequelize.STRING },
+    creditcard: { type: Sequelize.STRING },
     password: { type: Sequelize.STRING }
 });
 
 // ROOM MODEL DEFINITION
 const Rooms = sequelize.define('rooms', {
-    roomNumber: { type: Sequelize.STRING, unique: false },
-    roomType: { type: Sequelize.STRING, notNull: false },
-    roomRate: { type: Sequelize.STRING, notNull: false },
-    description:{type: Sequelize.STRING, notNull: false}
-
+    roomType: { type: Sequelize.STRING },
+    roomRate: { type: Sequelize.STRING },
+    description:{type: Sequelize.STRING }
 });
 
-
-//RESERVATION BOOKING MODEL DEFINITION (JOINT TABLE)
+//RESERVATION BOOKING MODEL DEFINITION (JOIN TABLE)
 const Bookings = sequelize.define('bookings', {
+    id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     confirmationNumber: { type: Sequelize.INTEGER},
-    dateCheckin: { type: Sequelize.DATE, notNull: false },
-    dateCheckout: { type: Sequelize.DATE, notNull: false },
-    roomType: { type: Sequelize.STRING, notNull: false },
-    roomNumber: { type: Sequelize.STRING, unique: false },
-    description:{type: Sequelize.STRING, notNull: false}
-
+    dateCheckin: { type: Sequelize.DATE },
+    dateCheckout: { type: Sequelize.DATE },
+    roomType: { type: Sequelize.STRING },
+    roomNumber: { type: Sequelize.STRING },
 });
-
-//syncing database and manually inserting in Postgress 
-sequelize.sync({force: true})
-.then(() => {
-  Rooms.create({
-    roomNumber: "01",
-    roomType: "Executive Suite",
-    bedPreference: "Smoking",
-    roomRate: "1500",
-    description: "Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city"
-  })
-})
-
-.then(() => {
-  Rooms.create({
-    roomNumber: "02",
-    roomType: "Jr Suite",
-    bedPreference: "Non-Smoking",
-    roomRate: "650",
-    description: "Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size."
-
-  })
-})
-
-.then(() => {
-  Rooms.create({
-    roomNumber: "03",
-    roomType: "Deluxe",
-    bedPreference: "Smoking",
-    roomRate: "300",
-    description:"Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included."
-
-  })
-})
-
-.then(() => {
-  Rooms.create({
-    roomNumber: "04",
-    roomType: "Standard Twin",
-    bedPreference: "Smoking",
-    roomRate: "250",
-    description: "There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort. "
-
-  })
-})
-
-.then(() => {
-  Bookings.create({
-    bookingId:1,
-    userId:1,
-    roomId:1,
-    dateCheckin: "2017-12-01",
-    dateCheckout:"2017-12-03 ",
-    roomType:"Executive Suite",
-    roomNumber:"01",
-    description:"Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city."
-
-  })
-})
-
-.then(() => {
-  Bookings.create({
-    bookings_userId:1,
-    userId:1,
-    roomId:1,
-    dateCheckin: "2017-12-01",
-    dateCheckout:"2017-12-03 ",
-    roomType:"Jr Suite",
-    roomNumber:"02",
-    description:"Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size."
-
-  })
-})
-
-.then(() => {
-  Bookings.create({
-  bookings_userId:1,  
-  userId:1,
-  roomId:1,  
-  dateCheckin: "2017-12-01",
-  dateCheckout:"2017-12-03 ",
-  roomType: "Deluxe",
-  roomNumber: "03",
-  description: "Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included."
-
-  })
-})
-
-.then(() => {
-  Bookings.create({
-    bookingId:1,
-    userId:1,
-    roomId:1,
-    dateCheckin: "2017-12-01",
-    dateCheckout:"2017-12-03 ",
-    roomType:"Standard Twin",
-    roomNumber:"04",
-    description:"There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort. "
-
-  })
-})
 
 // TABLES RELATIONSHIP/ASSOCIATION (for Many to Many Relationship)
-User.belongsToMany(Rooms, { through: Bookings });
-Rooms.belongsToMany(User, { through: Bookings });
+Users.belongsToMany(Rooms, { through: { model: Bookings, unique: false}, foreignKey: 'userId' });
+Rooms.belongsToMany(Users, { through: { model: Bookings, unique: false}, foreignKey: 'roomId' });
 
+//syncing database and manually inserting in Postgress
+sequelize.sync({ force: true })
+.then(() => {
+  Rooms.create({ roomType: "Standard", roomRate: "250", description: "bla" })
+  Rooms.create({ roomType: "Standard", roomRate: "250", description: "bla" })
+  Rooms.create({ roomType: "Standard", roomRate: "250", description: "bla" })
+  Rooms.create({ roomType: "Standard", roomRate: "250", description: "bla" })
+})
+.then(() => {
+  bcrypt.hash('p', 10).then((hash) => {
+    Users.create({ firstname: 'p', lastname: 'p', email: 'p', phone: 'p', address: 'p', passport: 'p', creditcard: 'p', password: hash })
+  }).then(() => {
+    Bookings.create({ userId:1, roomId:1, dateCheckin: "2017-12-01", dateCheckout:"2017-12-03 ", roomType:"Standard" })
+    Bookings.create({ userId:1, roomId:2, dateCheckin: "2017-12-01", dateCheckout:"2017-12-03 ", roomType:"Standard" })
+    Bookings.create({ userId:1, roomId:3, dateCheckin: "2017-12-01", dateCheckout:"2017-12-03 ", roomType: "Standard" })
+    Bookings.create({ userId:1, roomId:3, dateCheckin: "2017-12-04", dateCheckout:"2017-12-06 ", roomType:"Standard" })
+  })
+  bcrypt.hash('q', 10).then((hash) => {
+    Users.create({ firstname: 'q', lastname: 'q', email: 'q', phone: 'q', address: 'q', passport: 'q', creditcard: 'q', password: hash })
+  })
+})
 
 //INDEX/HOME ROUTE
 app.get('/', (req, res) => {
@@ -194,7 +111,7 @@ app.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  User.findOne({
+  Users.findOne({
     where: {
       email: req.body.email
     }
@@ -272,10 +189,6 @@ app.get('/profile', (req,res) => {
 app.get('/availability', (req,res) => {
   res.render('availability');
 })
-// roomType: "03",
-//     roomPreference: "Queen",
-//     bedPreference: "Smoking"
-//     roomRate: " 250"
 
 //creating new reservation as per avaialability in database and starting session for the user and sending them to their profile
 app.post('/availability', (req,res) => {
@@ -288,9 +201,6 @@ app.post('/availability', (req,res) => {
     console.log(result)
     res.render('availability', {query: result});
   })
-//   .catch(error => {
-//     console.error(error);
-//   })
 });
 
 //GET BOOKINGS ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile

@@ -13,69 +13,15 @@ block content
             h1.display-3 Available Rooms
 
         //- Loop over db query results
+        each entry in query
 
-        div.row.mb-3
-          div.col-md-4.bg-light095.pt-3.pb-3.order-md-2
-            img.img-fluid(src='/images/2.jpg')
-          div.col-md-8.bg-light095.pt-3.pb-3.order-md-1
-              p Some details about the room
+          div.row.mb-3
+            div.col-md-4.bg-light095.pt-3.pb-3.order-md-2
+              img.img-fluid(src='/images/2.jpg')
+            div.col-md-8.bg-light095.pt-3.pb-3.order-md-1
+              p= entry.dataValues.roomRate
               form
-                button.btn.btn-info(type="submit") Book This Room
-
-        div.row.mb-3
-          div.col-md-4.bg-light095.pt-3.pb-3.order-md-2
-            img.img-fluid(src='/images/2.jpg')
-          div.col-md-8.bg-light095.pt-3.pb-3.order-md-1
-              p Some details about the room
-              form
-                button.btn.btn-info(type="submit") Book This Room
-
-        div.row.mb-3
-          div.col-md-4.bg-light095.pt-3.pb-3.order-md-2
-            img.img-fluid(src='/images/2.jpg')
-          div.col-md-8.bg-light095.pt-3.pb-3.order-md-1
-              p Some details about the room
-              form
-                button.btn.btn-info(type="submit") Book This Room
-
-        div.row.mb-3
-          div.col-md-4.bg-light095.pt-3.pb-3.order-md-2
-            img.img-fluid(src='/images/2.jpg')
-          div.col-md-8.bg-light095.pt-3.pb-3.order-md-1
-              p Some details about the room
-              form
-                button.btn.btn-info(type="submit") Book This Room
-
-        div.row.mb-3
-          div.col-md-4.bg-light095.pt-3.pb-3.order-md-2
-            img.img-fluid(src='/images/2.jpg')
-          div.col-md-8.bg-light095.pt-3.pb-3.order-md-1
-              p Some details about the room
-              form
-                button.btn.btn-info(type="submit") Book This Room
-
-        div.row.mb-3
-          div.col-md-4.bg-light095.pt-3.pb-3.order-md-2
-            img.img-fluid(src='/images/2.jpg')
-          div.col-md-8.bg-light095.pt-3.pb-3.order-md-1
-              p Some details about the room
-              form
-                button.btn.btn-info(type="submit") Book This Room
-
-        div.row.mb-3
-          div.col-md-4.bg-light095.pt-3.pb-3.order-md-2
-            img.img-fluid(src='/images/2.jpg')
-          div.col-md-8.bg-light095.pt-3.pb-3.order-md-1
-              p Some details about the room
-              form
-                button.btn.btn-info(type="submit") Book This Room
-
-        div.row.mb-3
-          div.col-md-4.bg-light095.pt-3.pb-3.order-md-2
-            img.img-fluid(src='/images/2.jpg')
-          div.col-md-8.bg-light095.pt-3.pb-3.order-md-1
-              p Some details about the room
-              form
-                button.btn.btn-info(type="submit") Book This Room
+                button.btn.btn-info(type="submit") Book for € #{entry.dataValues.roomRate} / night
+              small You'll still have a chance to check your details
 
         div.row.pagespacer
