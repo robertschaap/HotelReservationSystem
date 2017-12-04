@@ -20,7 +20,7 @@ const sequelize = new Sequelize('reservation', process.env.POSTGRES_USER, proces
     host: 'localhost',
     dialect: 'postgres',
     storage: "./session.postgres",
-    // logging: false
+    logging: false
 });
 
 //SESSIONS
@@ -76,10 +76,10 @@ Rooms.hasMany(Bookings);
 //syncing database and manually inserting in Postgress
 sequelize.sync({ force: true })
 .then(() => {
-    Rooms.create({ roomType: "Standard", roomRate: "250", description: "bla", amount: 4 })
-    Rooms.create({ roomType: "Deluxe", roomRate: "250", description: "bla", amount: 4 })
-    Rooms.create({ roomType: "Junior", roomRate: "250", description: "bla", amount: 4 })
-    Rooms.create({ roomType: "Executive", roomRate: "250", description: "bla", amount: 4 })
+    Rooms.create({ roomType: "Standard", roomRate: "250", amount: 4, description: "There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort." })
+    Rooms.create({ roomType: "Deluxe", roomRate: "250", amount: 4, description: "Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included." })
+    Rooms.create({ roomType: "Junior", roomRate: "250", amount: 4, description: "Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size." })
+    Rooms.create({ roomType: "Executive", roomRate: "250", amount: 4, description: "Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city." })
 })
 .then(() => {
     bcrypt.hash('p', 10).then((hash) => {
@@ -240,6 +240,7 @@ app.post('/availability', (req,res) => {
 
 //Select a room and send to confirmation page where user checks and confirms booking to be made
 app.post('/bookings', (req,res) => {
+        console.log(req.body)
         res.render('bookings', { arrivalDate: req.body.arr, departureDate: req.body.dep, roomType: req.body.rty });
 });
 
