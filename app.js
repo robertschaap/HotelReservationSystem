@@ -199,11 +199,11 @@ app.get('/availability', (req,res) => {
 
 //Search for availability and redirect to availability overview page
 app.post('/availability', (req,res) => {
-    // let arrivaldate = req.body.arrivaldate
-    // let departuredate = req.body.departuredate
+    let arrivalDate = req.body.arrivaldate
+    let departureDate = req.body.departuredate
 
-    let arrivalDate = "2017-12-01"
-    let departureDate = "2017-12-03"
+    // let arrivalDate = "2017-12-01"
+    // let departureDate = "2017-12-03"
 
     Rooms.findAll({
         attributes: {
@@ -234,20 +234,13 @@ app.post('/availability', (req,res) => {
     })
     .then((result) => {
         console.log(result)
-        res.render('availability', { query: result });
+        res.render('availability', { query: result, arrivalDate: arrivalDate, departureDate: departureDate });
     })
 });
 
 //Select a room and send to confirmation page where user checks and confirms booking to be made
 app.post('/bookings', (req,res) => {
-    Booking.create({
-        dateCheckin: req.body.dateCheckin,
-        dateCheckout: req.body.dateCheckout,
-        roomType: req.body.roomType
-    })
-    .then((Booking) => {
-        res.render('bookings');
-    })
+        res.render('bookings', { arrivalDate: req.body.arr, departureDate: req.body.dep, roomType: req.body.rty });
 });
 
 //ROUTE TO CONFIRMATION

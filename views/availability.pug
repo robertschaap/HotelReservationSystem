@@ -11,6 +11,7 @@ block content
         div.row
           div.col
             h1.display-3 Available Rooms
+            p Displaying availability between #{arrivalDate} and #{departureDate}
 
         //- Loop over db query results
         each entry in query
@@ -22,7 +23,7 @@ block content
               h2= entry.roomType
               p= entry.description
               p Only #{entry.availability} available for your selected dates
-              form
+              form(action="/bookings?arr=" + arrivalDate + "?dep=" + departureDate + "?rty=" + entry.roomType method="post")
                 button.btn.btn-info(type="submit") Book for € #{entry.roomRate} / night
               small You'll still have a chance to check your details
 
