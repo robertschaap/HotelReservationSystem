@@ -126,21 +126,21 @@ app.post('/login', (req, res) => {
         }
     })
     .then((user) => {
-        const hash = user.password;
-        bcrypt.compare(password,hash)
-        .then((result) => {
-            if (user !== null && password === user.password) {
-                res.redirect(`/profile`);
-            } else {
-                //if incorrect showing error to user
-                res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-            }
-        })
-        .catch((error) => {
-            //if any error occurs showing an invalid message to user
-            console.error(error);
-            res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-        })
+        console.log(user)
+        if (user) {
+            const hash = user.password;
+            bcrypt.compare(password,hash)
+            .then ((result) => {
+                if (result) {
+                    res.redirect(`/profile`);
+                } else {
+                    res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+                }  
+            })
+        } else{ 
+             res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+        }
+       
     })
 });
 
