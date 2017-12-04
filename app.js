@@ -202,9 +202,7 @@ app.post('/availability', (req,res) => {
     let arrivalDate = req.body.arrivaldate
     let departureDate = req.body.departuredate
 
-    // let arrivalDate = "2017-12-01"
-    // let departureDate = "2017-12-03"
-
+    // Find all rooms and include count of bookings on room between arrival and departure date
     Rooms.findAll({
         attributes: {
             include: [[sequelize.fn('count', sequelize.col('bookings.id')), 'bookingscount']],
@@ -224,7 +222,7 @@ app.post('/availability', (req,res) => {
         group: ['rooms.id']
     })
     .then((result) => {
-        console.log(result)
+        // Remove redundant rows and calculate available rooms per room type
         return result.map(i => {
             let newDataValues = i.dataValues;
             newDataValues.bookingscount = Number(newDataValues.bookingscount);
