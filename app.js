@@ -31,10 +31,10 @@ app.use(session({
         expiration: 24 * 60 * 60 * 1000,
     }),
     secret: "whatever secret for user",
-    saveUninitialized: true,
-    resave: false
-    })
-);
+    saveUninitialized: false,
+    resave: true
+}));
+
 
 //MODEL CONFIGURATION
 const Users = sequelize.define('users', {
@@ -99,49 +99,44 @@ sequelize.sync({ force: true })
 
 //INDEX/HOME ROUTE
 app.get('/', (req, res) => {
-    res.render('index', {
-        message: req.query.message,
-        user: req.session.user
-    });
+    res.render('index');
 });
 
 //USERS LOGIN PAGE IS ON INDEX PAGE
 app.post('/login', (req, res) => {
-    if (req.body.email.length === 0) {
-        res.redirect('/?message=' + encodeURIComponent("Please fill in your username."))
-        return;
-    }
-
-    if (req.body.password.length === 0) {
-        res.redirect('/?message=' + encodeURIComponent("Please fill in your password."))
-    return;
-    }
-
     const email = req.body.email;
     const password = req.body.password;
 
-    Users.findOne({
-        where: {
-            email: req.body.email
-        }
-    })
-    .then((user) => {
-        console.log(user)
-        if (user) {
-            const hash = user.password;
-            bcrypt.compare(password,hash)
-            .then ((result) => {
-                if (result) {
-                    res.redirect(`/profile`);
-                } else {
-                    res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-                }  
-            })
-        } else{ 
-             res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-        }
-       
-    })
+    if ( email && password ) {
+        Users.findOne({
+            where: {
+                email: req.body.email
+            }
+        })
+        .then((user) => {
+            if (user) {
+                const hash = user.password;
+                bcrypt.compare(password,hash)
+                .then ((result) => {
+                    if (!result) {
+                        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+                        return
+                    } else {
+                        req.session.user = user;
+                    }
+                })
+                .then((result) => {
+                    console.log('the result')
+                    console.log(result)
+                    res.redirect('/profile');
+                })
+            } else {
+                res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+            }
+        })
+    } else {
+        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+    }
 });
 
 //TO REGISTER ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
@@ -174,7 +169,6 @@ app.post('/register', (req,res) => {
             })
         })
         .catch((error) => {
-            console.error(error);
             res.redirect('/?message=' + encodeURIComponent('Error has occurred. Please check the server.'));
         })
     } else {
@@ -183,12 +177,7 @@ app.post('/register', (req,res) => {
 });
 
 app.get('/profile', (req,res) => {
-    const user = req.session.user;
-        if (user === undefined) {
-        res.redirect('/?message=' + encodeURIComponent("Please log in"));
-    } else {
-        res.render('profile', { user: user });
-    }
+    res.render('profile', { user: req.session.user });
 });
 
 //ROUTE TO CHECK AVAILABILITY ROUTE
@@ -231,14 +220,12 @@ app.post('/availability', (req,res) => {
         })
     })
     .then((result) => {
-        console.log(result)
         res.render('availability', { query: result, arrivalDate: arrivalDate, departureDate: departureDate });
     })
 });
 
 //Select a room and send to confirmation page where user checks and confirms booking to be made
 app.post('/bookings', (req,res) => {
-        console.log(req.body)
         res.render('bookings', { arrivalDate: req.body.arr, departureDate: req.body.dep, roomType: req.body.rty });
 });
 
