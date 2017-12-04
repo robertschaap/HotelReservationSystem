@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const Op = Sequelize.Op;
 const bcrypt = require('bcrypt');
 // const nodemailer = require('nodemailer');
 
@@ -19,7 +20,7 @@ const sequelize = new Sequelize('reservation', process.env.POSTGRES_USER, proces
     host: 'localhost',
     dialect: 'postgres',
     storage: "./session.postgres",
-    logging: false
+    // logging: false
 });
 
 //SESSIONS
@@ -51,7 +52,8 @@ const Users = sequelize.define('users', {
 const Rooms = sequelize.define('rooms', {
     roomType: { type: Sequelize.STRING },
     roomRate: { type: Sequelize.STRING },
-    description:{type: Sequelize.STRING }
+    description:{ type: Sequelize.STRING },
+    amount: { type: Sequelize.INTEGER }
 });
 
 //RESERVATION BOOKING MODEL DEFINITION (JOIN TABLE)
@@ -65,33 +67,35 @@ const Bookings = sequelize.define('bookings', {
 });
 
 // TABLES RELATIONSHIP/ASSOCIATION (for Many to Many Relationship)
-// Future note - if join table is not just linking IDs but also adding date, force
-// a primary key on the table and manually set the foreign keys or the model will automatically
-// restrain itself on the last association.
+// Future note - if join also adding data, force PK and set FKs manually or model will restrain
 Users.belongsToMany(Rooms, { through: { model: Bookings, unique: false}, foreignKey: 'userId' });
 Rooms.belongsToMany(Users, { through: { model: Bookings, unique: false}, foreignKey: 'roomId' });
+Rooms.hasMany(Bookings);
+
 
 //syncing database and manually inserting in Postgress
 sequelize.sync({ force: true })
 .then(() => {
-    Rooms.create({ roomType: "Standard", roomRate: "250", description: "bla" })
-    Rooms.create({ roomType: "Standard", roomRate: "250", description: "bla" })
-    Rooms.create({ roomType: "Standard", roomRate: "250", description: "bla" })
-    Rooms.create({ roomType: "Standard", roomRate: "250", description: "bla" })
+    Rooms.create({ roomType: "Standard", roomRate: "250", description: "bla", amount: 4 })
+    Rooms.create({ roomType: "Deluxe", roomRate: "250", description: "bla", amount: 4 })
+    Rooms.create({ roomType: "Junior", roomRate: "250", description: "bla", amount: 4 })
+    Rooms.create({ roomType: "Executive", roomRate: "250", description: "bla", amount: 4 })
 })
 .then(() => {
     bcrypt.hash('p', 10).then((hash) => {
         Users.create({ firstname: 'p', lastname: 'p', email: 'p', phone: 'p', address: 'p', passport: 'p', creditcard: 'p', password: hash })
     }).then(() => {
-        Bookings.create({ userId:1, roomId:1, dateCheckin: "2017-12-01", dateCheckout:"2017-12-03 ", roomType:"Standard" })
-        Bookings.create({ userId:1, roomId:2, dateCheckin: "2017-12-01", dateCheckout:"2017-12-03 ", roomType:"Standard" })
-        Bookings.create({ userId:1, roomId:3, dateCheckin: "2017-12-01", dateCheckout:"2017-12-03 ", roomType: "Standard" })
-        Bookings.create({ userId:1, roomId:3, dateCheckin: "2017-12-04", dateCheckout:"2017-12-06 ", roomType:"Standard" })
+        Bookings.create({ userId:1, roomId:2, dateCheckin: "2017-12-01", dateCheckout: "2017-12-03", roomType: "Deluxe" })
+        Bookings.create({ userId:1, roomId:2, dateCheckin: "2017-12-01", dateCheckout: "2017-12-03", roomType: "Deluxe" })
+        Bookings.create({ userId:1, roomId:2, dateCheckin: "2017-12-01", dateCheckout: "2017-12-03", roomType: "Deluxe" })
+        Bookings.create({ userId:1, roomId:2, dateCheckin: "2017-12-04", dateCheckout: "2017-12-06", roomType: "Deluxe" })
+        Bookings.create({ userId:1, roomId:3, dateCheckin: "2017-12-01", dateCheckout: "2017-12-03", roomType: "Junior" })
     })
     bcrypt.hash('q', 10).then((hash) => {
         Users.create({ firstname: 'q', lastname: 'q', email: 'q', phone: 'q', address: 'q', passport: 'q', creditcard: 'q', password: hash })
     })
 })
+
 
 //INDEX/HOME ROUTE
 app.get('/', (req, res) => {
@@ -195,14 +199,42 @@ app.get('/availability', (req,res) => {
 
 //Search for availability and redirect to availability overview page
 app.post('/availability', (req,res) => {
-    const user = req.session.user;
-    let arrivaldate = req.body.arrivaldate
-    let departuredate = req.body.departuredate
+    // let arrivaldate = req.body.arrivaldate
+    // let departuredate = req.body.departuredate
 
-    Rooms.findAll()
+    let arrivalDate = "2017-12-01"
+    let departureDate = "2017-12-03"
+
+    Rooms.findAll({
+        attributes: {
+            include: [[sequelize.fn('count', sequelize.col('bookings.id')), 'bookingscount']],
+        },
+        include: [{
+            model: Bookings,
+            required: false,
+            attributes: [],
+            where: {
+                [Op.or]: [{
+                    dateCheckin: {[Op.between]: [ arrivalDate, departureDate ]}
+                },{
+                    dateCheckout: {[Op.between]: [ arrivalDate, departureDate ]}
+                }]
+            },
+        }],
+        group: ['rooms.id']
+    })
     .then((result) => {
         console.log(result)
-        res.render('availability', {query: result});
+        return result.map(i => {
+            let newDataValues = i.dataValues;
+            newDataValues.bookingscount = Number(newDataValues.bookingscount);
+            newDataValues.availability = newDataValues.amount - newDataValues.bookingscount;
+            return newDataValues;
+        })
+    })
+    .then((result) => {
+        console.log(result)
+        res.render('availability', { query: result });
     })
 });
 

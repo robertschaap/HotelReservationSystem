@@ -19,9 +19,11 @@ block content
             div.col-md-4.bg-light095.pt-3.pb-3.order-md-2
               img.img-fluid(src='/images/2.jpg')
             div.col-md-8.bg-light095.pt-3.pb-3.order-md-1
-              p= entry.dataValues.roomRate
+              h2= entry.roomType
+              p= entry.description
+              p Only #{entry.availability} available for your selected dates
               form
-                button.btn.btn-info(type="submit") Book for € #{entry.dataValues.roomRate} / night
+                button.btn.btn-info(type="submit") Book for € #{entry.roomRate} / night
               small You'll still have a chance to check your details
 
         div.row.pagespacer
