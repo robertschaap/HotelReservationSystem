@@ -23,12 +23,15 @@ block content
                 p Room Rate: #{roomRate}
 
                 p.lead Personal Details
-                P No personal life
+                P #{user.firstname} + " " + #{user.lastname}
+                P #{user.email}
+                p #{user.address} + " " + #{user.zipcode}
+                p #{user.country}
 
             //- Display Result of Booking
 
             //- Booking Room Form
-            form(action="/" method="post").d-inline-block.pt-3.pb-4.pr-2
+            form(action="/confirmation?arr="+arrivalDate+"&dep="+departureDate+"&rty="+roomType method="post").d-inline-block.pt-3.pb-4.pr-2
               button.btn.btn-success(type="submit") Confirm This Booking
             form(action="/" method="post").d-inline-block.pt-3.pb-4
               button.btn.btn-danger(type="submit") Cancel This Booking
