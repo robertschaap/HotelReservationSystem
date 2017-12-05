@@ -133,14 +133,13 @@ app.post('/login', (req, res) => {
             .then ((result) => {
                 if (result) {
                     res.redirect(`/profile`);
-                } else {
+                } else 
                     res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
                 }  
             })
         } else{ 
-             res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
         }
-       
+        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
     })
 });
 
