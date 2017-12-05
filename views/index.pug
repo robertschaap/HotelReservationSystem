@@ -54,6 +54,8 @@ block content
                       label.mb-0 Password
                       input.form-control(type='password', name='password' minlength='')
                 button.btn.btn-info.btn-block(type='submit') Log In
+                if message
+                  small #{message}
 
     //- Rooms Block
     div#rooms.onevh.mb-0.bg-white

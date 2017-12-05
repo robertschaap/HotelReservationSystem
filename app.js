@@ -9,7 +9,7 @@ const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const Op = Sequelize.Op;
 const bcrypt = require('bcrypt');
-// const nodemailer = require('nodemailer');
+
 
 //configuring and initializing modules
 app.set('view engine', 'pug');
@@ -23,7 +23,7 @@ const sequelize = new Sequelize('reservation', process.env.POSTGRES_USER, proces
     logging: false
 });
 
-//SESSIONS
+// sessions
 app.use(session({
     store: new SequelizeStore({
         db: sequelize,
@@ -31,24 +31,35 @@ app.use(session({
         expiration: 24 * 60 * 60 * 1000,
     }),
     secret: "whatever secret for user",
-    saveUninitialized: true,
-    resave: false
-    })
-);
+    saveUninitialized: false,
+    resave: true
+}));
 
-//MODEL CONFIGURATION
+app.use((req, res, next) => {
+    if(req.session.user) {
+        res.locals.user = req.session.user;
+        next();
+    } else {
+        next();
+    }
+});
+
+
+// model configuration
 const Users = sequelize.define('users', {
     firstname: { type: Sequelize.STRING },
     lastname: { type: Sequelize.STRING },
     email: { type: Sequelize.STRING },
     phone: { type: Sequelize.STRING },
     address: { type: Sequelize.STRING },
+    zipcode: { type: Sequelize.STRING },
+    country: { type: Sequelize.STRING },
     passport: { type: Sequelize.STRING },
+    roompreference: { type: Sequelize.STRING },
     creditcard: { type: Sequelize.STRING },
     password: { type: Sequelize.STRING }
 });
 
-// ROOM MODEL DEFINITION
 const Rooms = sequelize.define('rooms', {
     roomType: { type: Sequelize.STRING },
     roomRate: { type: Sequelize.STRING },
@@ -56,7 +67,6 @@ const Rooms = sequelize.define('rooms', {
     amount: { type: Sequelize.INTEGER }
 });
 
-//RESERVATION BOOKING MODEL DEFINITION (JOIN TABLE)
 const Bookings = sequelize.define('bookings', {
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     confirmationNumber: { type: Sequelize.INTEGER},
@@ -66,20 +76,20 @@ const Bookings = sequelize.define('bookings', {
     roomNumber: { type: Sequelize.STRING },
 });
 
-// TABLES RELATIONSHIP/ASSOCIATION (for Many to Many Relationship)
-// Future note - if join also adding data, force PK and set FKs manually or model will restrain
+// table relationships
+// future note - if join also adding data, force PK and set FKs manually or model will restrain
 Users.belongsToMany(Rooms, { through: { model: Bookings, unique: false}, foreignKey: 'userId' });
 Rooms.belongsToMany(Users, { through: { model: Bookings, unique: false}, foreignKey: 'roomId' });
 Rooms.hasMany(Bookings);
 
 
-//syncing database and manually inserting in Postgress
+//syncing database and manually inserting in pg
 sequelize.sync({ force: true })
 .then(() => {
     Rooms.create({ roomType: "Standard", roomRate: "250", amount: 4, description: "There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort." })
-    Rooms.create({ roomType: "Deluxe", roomRate: "250", amount: 4, description: "Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included." })
-    Rooms.create({ roomType: "Junior", roomRate: "250", amount: 4, description: "Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size." })
-    Rooms.create({ roomType: "Executive", roomRate: "250", amount: 4, description: "Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city." })
+    Rooms.create({ roomType: "Deluxe", roomRate: "280", amount: 4, description: "Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included." })
+    Rooms.create({ roomType: "Junior", roomRate: "360", amount: 4, description: "Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size." })
+    Rooms.create({ roomType: "Executive", roomRate: "500", amount: 4, description: "Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city." })
 })
 .then(() => {
     bcrypt.hash('p', 10).then((hash) => {
@@ -97,14 +107,12 @@ sequelize.sync({ force: true })
 })
 
 
-//INDEX/HOME ROUTE
+// index route
 app.get('/', (req, res) => {
-    res.render('index', {
-        message: req.query.message,
-        user: req.session.user
-    });
+    res.render('index', { message: req.query.message });
 });
 
+<<<<<<< HEAD
 //USERS LOGIN PAGE IS ON INDEX PAGE
 app.post('/login', (req, res) => {
     if (req.body.email.length === 0) {
@@ -144,59 +152,104 @@ app.post('/login', (req, res) => {
 });
 
 //TO REGISTER ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
+// registration route: create new user, set session and redirect
+
 app.get('/register', (req,res) => {
     res.render('register');
 })
 
-//creating new user in database and starting session for the user and sending them to their profile
 app.post('/register', (req,res) => {
+
+    console.log(req.body)
     if ( req.body.password ) {
         const password = req.body.password;
         bcrypt.hash(password, 10)
         .then((hash) => {
-            User.create({
+            Users.create({
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 email: req.body.email,
                 phone: req.body.phone,
                 address: req.body.address,
+                zipcode: req.body.zipcode,
+                country: req.body.country,
+                roompreference: req.body.roompreference,
                 passport: req.body.passport,
                 creditcard: req.body.creditcard,
                 password: hash
             })
             .then((user) => {
                 req.session.user = user;
-                return
+                res.locals.user = user;
+                return req.session.user
             })
             .then(() => {
-                res.redirect('/profile');
+                res.redirect('/');
             })
         })
         .catch((error) => {
-            console.error(error);
-            res.redirect('/?message=' + encodeURIComponent('Error has occurred. Please check the server.'));
+            console.log(error)
+            res.redirect('/?message=' + encodeURIComponent('Error has occurred'));
         })
     } else {
-        res.render('register', { message: "The passwords don't match!" });
+        res.redirect('/')
     };
 });
 
-app.get('/profile', (req,res) => {
-    const user = req.session.user;
-        if (user === undefined) {
-        res.redirect('/?message=' + encodeURIComponent("Please log in"));
+// login routing from index page
+app.post('/login', (req, res) => {
+    let useremail = req.body.email;
+    let userpassword = req.body.password;
+
+    if ( useremail && userpassword ) {
+        Users.findOne({
+            where: {
+                email: useremail
+            }
+        }).then((queryresult) => {
+            if (!queryresult) {
+                res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+            } else {
+                return bcrypt.compare(userpassword, queryresult.password)
+                .then((res) => {
+                    if(res) {
+                        req.session.user = queryresult;
+                        return queryresult;
+                    } else {
+                        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+                    }
+                })
+            }
+        }).then((result) => {
+            if (req.session.user) {
+                res.redirect('/')
+            } else {
+                res.redirect('/?message=' + encodeURIComponent("An error occured, please login again."));
+            }
+        })
     } else {
-        res.render('profile', { user: user });
+        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
     }
 });
 
-//ROUTE TO CHECK AVAILABILITY ROUTE
-//Display availability results from post route
+app.get('/logout', (req, res) => {
+    req.session.destroy( () => {
+        res.redirect('/');
+    });
+});
+
+// static profile page
+app.get('/profile', (req,res) => {
+    res.render('profile');
+});
+
+// availability route
+// display availability results from post route
 app.get('/availability', (req,res) => {
     res.render('availability');
 })
 
-//Search for availability and redirect to availability overview page
+// search for availability and redirect to availability overview page
 app.post('/availability', (req,res) => {
     let arrivalDate = req.body.arrivaldate
     let departureDate = req.body.departuredate
@@ -221,6 +274,7 @@ app.post('/availability', (req,res) => {
         group: ['rooms.id']
     })
     .then((result) => {
+
         // Remove redundant rows and calculate available rooms per room type
         return result.map(i => {
             let newDataValues = i.dataValues;
@@ -230,32 +284,25 @@ app.post('/availability', (req,res) => {
         })
     })
     .then((result) => {
-        console.log(result)
         res.render('availability', { query: result, arrivalDate: arrivalDate, departureDate: departureDate });
     })
 });
 
-//Select a room and send to confirmation page where user checks and confirms booking to be made
+// select a room and send to confirmation page where user checks and confirms booking to be made
 app.post('/bookings', (req,res) => {
-        console.log(req.body)
-        res.render('bookings', { arrivalDate: req.body.arr, departureDate: req.body.dep, roomType: req.body.rty });
+    res.render('bookings', { arrivalDate: req.query.arr, departureDate: req.query.dep, roomType: req.query.rty, roomRate: req.query.rrt, user: req.session.user });
 });
 
-//ROUTE TO CONFIRMATION
-//User will receive a confirmation on booking to be made, checks and confirms if ok
-app.get('/confirmation', (req,res) => {
-    res.render('confirmation');
-});
-
-//Creating actual booking in database
+// creating actual booking in database
 app.post('/confirmation', (req,res) => {
+    console.log(req.query)
     Booking.create({
-        dateCheckin: req.body.dateCheckin,
-        dateCheckout: req.body.dateCheckout,
-        roomType: req.body.roomType
+        dateCheckin: req.query.arr,
+        dateCheckout: req.query.dep,
+        roomType: req.query.rty
     })
     .then((Booking) => {
-        res.render('confirmed');
+        res.render('confirmation');
     })
 });
 

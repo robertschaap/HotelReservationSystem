@@ -17,17 +17,21 @@ block content
                 p Please take a moment to double-check your booking below. If you still have questions at this time, please do not hesitate to contact us via the contact details provided below. When you're done, please click the Confirm This Booking Button
 
                 p.lead Trip Details
-                P Arrival Date:
-                p Departure Date:
-                p Room Type:
+                P Arrival Date: #{arrivalDate}
+                p Departure Date: #{departureDate}
+                p Room Type: #{roomType}
+                p Room Rate: #{roomRate}
 
                 p.lead Personal Details
-                P No personal life
+                P #{user.firstname} + " " + #{user.lastname}
+                P #{user.email}
+                p #{user.address} + " " + #{user.zipcode}
+                p #{user.country}
 
             //- Display Result of Booking
 
             //- Booking Room Form
-            form(action="/" method="post").d-inline-block.pt-3.pb-4.pr-2
+            form(action="/confirmation?arr="+arrivalDate+"&dep="+departureDate+"&rty="+roomType method="post").d-inline-block.pt-3.pb-4.pr-2
               button.btn.btn-success(type="submit") Confirm This Booking
             form(action="/" method="post").d-inline-block.pt-3.pb-4
               button.btn.btn-danger(type="submit") Cancel This Booking
