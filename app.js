@@ -9,7 +9,7 @@ const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const Op = Sequelize.Op;
 const bcrypt = require('bcrypt');
-// const nodemailer = require('nodemailer');
+
 
 //configuring and initializing modules
 app.set('view engine', 'pug');
@@ -23,7 +23,7 @@ const sequelize = new Sequelize('reservation', process.env.POSTGRES_USER, proces
     logging: false
 });
 
-//SESSIONS
+// sessions
 app.use(session({
     store: new SequelizeStore({
         db: sequelize,
@@ -35,8 +35,17 @@ app.use(session({
     resave: true
 }));
 
+app.use((req, res, next) => {
+    if(req.session.user) {
+        res.locals.user = true;
+        next();
+    } else {
+        next();
+    }
+});
 
-//MODEL CONFIGURATION
+
+// model configuration
 const Users = sequelize.define('users', {
     firstname: { type: Sequelize.STRING },
     lastname: { type: Sequelize.STRING },
@@ -48,7 +57,6 @@ const Users = sequelize.define('users', {
     password: { type: Sequelize.STRING }
 });
 
-// ROOM MODEL DEFINITION
 const Rooms = sequelize.define('rooms', {
     roomType: { type: Sequelize.STRING },
     roomRate: { type: Sequelize.STRING },
@@ -56,7 +64,6 @@ const Rooms = sequelize.define('rooms', {
     amount: { type: Sequelize.INTEGER }
 });
 
-//RESERVATION BOOKING MODEL DEFINITION (JOIN TABLE)
 const Bookings = sequelize.define('bookings', {
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     confirmationNumber: { type: Sequelize.INTEGER},
@@ -66,14 +73,14 @@ const Bookings = sequelize.define('bookings', {
     roomNumber: { type: Sequelize.STRING },
 });
 
-// TABLES RELATIONSHIP/ASSOCIATION (for Many to Many Relationship)
-// Future note - if join also adding data, force PK and set FKs manually or model will restrain
+// table relationships
+// future note - if join also adding data, force PK and set FKs manually or model will restrain
 Users.belongsToMany(Rooms, { through: { model: Bookings, unique: false}, foreignKey: 'userId' });
 Rooms.belongsToMany(Users, { through: { model: Bookings, unique: false}, foreignKey: 'roomId' });
 Rooms.hasMany(Bookings);
 
 
-//syncing database and manually inserting in Postgress
+//syncing database and manually inserting in pg
 sequelize.sync({ force: true })
 .then(() => {
     Rooms.create({ roomType: "Standard", roomRate: "250", amount: 4, description: "There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort." })
@@ -97,54 +104,17 @@ sequelize.sync({ force: true })
 })
 
 
-//INDEX/HOME ROUTE
+// index route
 app.get('/', (req, res) => {
+    console.log(req.session.user)
     res.render('index');
 });
 
-//USERS LOGIN PAGE IS ON INDEX PAGE
-app.post('/login', (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    if ( email && password ) {
-        Users.findOne({
-            where: {
-                email: req.body.email
-            }
-        })
-        .then((user) => {
-            if (user) {
-                const hash = user.password;
-                bcrypt.compare(password,hash)
-                .then ((result) => {
-                    if (!result) {
-                        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-                        return
-                    } else {
-                        req.session.user = user;
-                    }
-                })
-                .then((result) => {
-                    console.log('the result')
-                    console.log(result)
-                    res.redirect('/profile');
-                })
-            } else {
-                res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-            }
-        })
-    } else {
-        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-    }
-});
-
-//TO REGISTER ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
+// registration route: create new user, set session and redirect
 app.get('/register', (req,res) => {
     res.render('register');
 })
 
-//creating new user in database and starting session for the user and sending them to their profile
 app.post('/register', (req,res) => {
     if ( req.body.password ) {
         const password = req.body.password;
@@ -165,28 +135,71 @@ app.post('/register', (req,res) => {
                 return
             })
             .then(() => {
-                res.redirect('/profile');
+                res.redirect('/');
             })
         })
         .catch((error) => {
-            res.redirect('/?message=' + encodeURIComponent('Error has occurred. Please check the server.'));
+            res.redirect('/?message=' + encodeURIComponent('Error has occurred'));
         })
     } else {
         res.render('register', { message: "The passwords don't match!" });
     };
 });
 
+// login routing from index page
+app.post('/login', (req, res) => {
+    let useremail = req.body.email;
+    let userpassword = req.body.password;
+
+    if ( useremail && userpassword ) {
+        Users.findOne({
+            where: {
+                email: useremail
+            }
+        }).then((queryresult) => {
+            if (!queryresult) {
+                res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+            } else {
+                return bcrypt.compare(userpassword, queryresult.password)
+                .then((res) => {
+                    if(res) {
+                        req.session.user = queryresult;
+                        return queryresult;
+                    } else {
+                        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+                    }
+                })
+            }
+        }).then((result) => {
+            if (req.session.user) {
+                res.redirect('/')
+            } else {
+                res.redirect('/?message=' + encodeURIComponent("An error occured, please login again."));
+            }
+        })
+    } else {
+        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+    }
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy( () => {
+        res.redirect('/');
+    });
+});
+
+// static profile page
 app.get('/profile', (req,res) => {
     res.render('profile', { user: req.session.user });
 });
 
-//ROUTE TO CHECK AVAILABILITY ROUTE
-//Display availability results from post route
+// availability route
+// display availability results from post route
 app.get('/availability', (req,res) => {
     res.render('availability');
 })
 
-//Search for availability and redirect to availability overview page
+// search for availability and redirect to availability overview page
 app.post('/availability', (req,res) => {
     let arrivalDate = req.body.arrivaldate
     let departureDate = req.body.departuredate
@@ -211,6 +224,7 @@ app.post('/availability', (req,res) => {
         group: ['rooms.id']
     })
     .then((result) => {
+
         // Remove redundant rows and calculate available rooms per room type
         return result.map(i => {
             let newDataValues = i.dataValues;
@@ -224,18 +238,18 @@ app.post('/availability', (req,res) => {
     })
 });
 
-//Select a room and send to confirmation page where user checks and confirms booking to be made
+// select a room and send to confirmation page where user checks and confirms booking to be made
 app.post('/bookings', (req,res) => {
         res.render('bookings', { arrivalDate: req.body.arr, departureDate: req.body.dep, roomType: req.body.rty });
 });
 
-//ROUTE TO CONFIRMATION
-//User will receive a confirmation on booking to be made, checks and confirms if ok
+// confirmation route
+// user will receive a confirmation on booking to be made, checks and confirms if ok
 app.get('/confirmation', (req,res) => {
     res.render('confirmation');
 });
 
-//Creating actual booking in database
+// creating actual booking in database
 app.post('/confirmation', (req,res) => {
     Booking.create({
         dateCheckin: req.body.dateCheckin,
