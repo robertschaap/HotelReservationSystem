@@ -9,4 +9,13 @@ block content
 
         div.row
           div.col-md-8
-            h1.display-3 #{user.firstname + " " + user.lastname}
+            h1.display-3 Welcome #{user.firstname + " " + user.lastname}
+            p.lead Your userprofile
+            p= user.email
+            p= user.phone
+            p= user.address
+            p= user.zipcode
+            p= user.country
+            p= user.roompreference
+
+            p For security reaons we do not display the creditcard you used to book the room with, if you have any changes or additions, please speak to the front desk upon check-in or check-out. Your credit card will never be charged before you check into the room.

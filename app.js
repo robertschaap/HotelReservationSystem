@@ -37,7 +37,7 @@ app.use(session({
 
 app.use((req, res, next) => {
     if(req.session.user) {
-        res.locals.user = true;
+        res.locals.user = req.session.user;
         next();
     } else {
         next();
@@ -52,7 +52,10 @@ const Users = sequelize.define('users', {
     email: { type: Sequelize.STRING },
     phone: { type: Sequelize.STRING },
     address: { type: Sequelize.STRING },
+    zipcode: { type: Sequelize.STRING },
+    country: { type: Sequelize.STRING },
     passport: { type: Sequelize.STRING },
+    roompreference: { type: Sequelize.STRING },
     creditcard: { type: Sequelize.STRING },
     password: { type: Sequelize.STRING }
 });
@@ -106,8 +109,7 @@ sequelize.sync({ force: true })
 
 // index route
 app.get('/', (req, res) => {
-    console.log(req.session.user)
-    res.render('index');
+    res.render('index', { message: req.query.message });
 });
 
 // registration route: create new user, set session and redirect
@@ -116,33 +118,40 @@ app.get('/register', (req,res) => {
 })
 
 app.post('/register', (req,res) => {
+
+    console.log(req.body)
     if ( req.body.password ) {
         const password = req.body.password;
         bcrypt.hash(password, 10)
         .then((hash) => {
-            User.create({
+            Users.create({
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 email: req.body.email,
                 phone: req.body.phone,
                 address: req.body.address,
+                zipcode: req.body.zipcode,
+                country: req.body.country,
+                roompreference: req.body.roompreference,
                 passport: req.body.passport,
                 creditcard: req.body.creditcard,
                 password: hash
             })
             .then((user) => {
                 req.session.user = user;
-                return
+                res.locals.user = user;
+                return req.session.user
             })
             .then(() => {
                 res.redirect('/');
             })
         })
         .catch((error) => {
+            console.log(error)
             res.redirect('/?message=' + encodeURIComponent('Error has occurred'));
         })
     } else {
-        res.render('register', { message: "The passwords don't match!" });
+        res.redirect('/')
     };
 });
 
@@ -190,7 +199,7 @@ app.get('/logout', (req, res) => {
 
 // static profile page
 app.get('/profile', (req,res) => {
-    res.render('profile', { user: req.session.user });
+    res.render('profile');
 });
 
 // availability route
