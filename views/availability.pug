@@ -23,7 +23,7 @@ block content
               h2= entry.roomType
               p= entry.description
               p #{entry.availability} room(s) available for your selected dates
-              form(action="/bookings?arr=" + arrivalDate + "?dep=" + departureDate + "?rty=" + entry.roomType method="post")
+              form(action="/bookings?arr="+arrivalDate+"&dep="+departureDate+"&rty="+entry.roomType+"&rrt="+entry.roomRate method="post")
                 button.btn.btn-info(type="submit") Book for € #{entry.roomRate} / night
               small You'll still have a chance to check your details
 
