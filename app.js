@@ -174,7 +174,7 @@ const password = req.body.password;
             })
             .then((user) => {
                 req.session.user = user;
-                 res.redirect(`/profile/${user.username}`)
+                res.redirect('profile')
             })
         })
         .catch((error) => {
