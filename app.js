@@ -226,16 +226,6 @@ app.get('/logout', (req, res) => {
 });
 
 // static profile page
-<<<<<<< HEAD
-app.get('/users/:username', (req,res) => {
-  const user = req.session.user;
-  if (user === undefined) {
-    res.redirect('/?message=' + encodeURIComponent("Please log in"));
-  } else {
-    res.render('profile', {
-      user: user
-    })
-  }
 app.get('/profile', (req,res) => {
     res.render('profile', { user: req.session.user });
 });
