@@ -112,43 +112,40 @@ app.get('/', (req, res) => {
     res.render('index', { message: req.query.message });
 });
 
-<<<<<<< HEAD
 //USERS LOGIN PAGE IS ON INDEX PAGE
 app.post('/login', (req, res) => {
-    if (req.body.email.length === 0) {
-        res.redirect('/?message=' + encodeURIComponent("Please fill in your username."))
-        return;
-    }
+    let useremail = req.body.email;
+    let userpassword = req.body.password;
 
-    if (req.body.password.length === 0) {
-        res.redirect('/?message=' + encodeURIComponent("Please fill in your password."))
-    return;
-    }
-
-    const email = req.body.email;
-    const password = req.body.password;
-
-    Users.findOne({
-        where: {
-            email: req.body.email
-        }
-    })
-    .then((user) => {
-        console.log(user)
-        if (user) {
-            const hash = user.password;
-            bcrypt.compare(password,hash)
-            .then ((result) => {
-                if (result) {
-                    res.redirect(`/profile`);
-                } else 
-                    res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-                }  
-            })
-        } else{ 
-        }
+    if ( useremail && userpassword ) {
+        Users.findOne({
+            where: {
+                email: useremail
+            }
+        }).then((queryresult) => {
+            if (!queryresult) {
+                res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+            } else {
+                return bcrypt.compare(userpassword, queryresult.password)
+                .then((res) => {
+                    if(res) {
+                        req.session.user = queryresult;
+                        return queryresult;
+                    } else {
+                        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+                    }
+                })
+            }
+        }).then((result) => {
+            if (req.session.user) {
+                res.redirect('/')
+            } else {
+                res.redirect('/?message=' + encodeURIComponent("An error occured, please login again."));
+            }
+        })
+    } else {
         res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-    })
+    }
 });
 
 //TO REGISTER ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
@@ -159,11 +156,8 @@ app.get('/register', (req,res) => {
 })
 
 app.post('/register', (req,res) => {
-
-    console.log(req.body)
-    if ( req.body.password ) {
-        const password = req.body.password;
-        bcrypt.hash(password, 10)
+const password = req.body.password;
+        bcrypt.hash(password, 8)
         .then((hash) => {
             Users.create({
                 firstname: req.body.firstname,
@@ -180,20 +174,13 @@ app.post('/register', (req,res) => {
             })
             .then((user) => {
                 req.session.user = user;
-                res.locals.user = user;
-                return req.session.user
-            })
-            .then(() => {
-                res.redirect('/');
+                 res.redirect(`/profile/${user.username}`)
             })
         })
         .catch((error) => {
             console.log(error)
             res.redirect('/?message=' + encodeURIComponent('Error has occurred'));
         })
-    } else {
-        res.redirect('/')
-    };
 });
 
 // login routing from index page
