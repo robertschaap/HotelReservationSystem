@@ -174,7 +174,7 @@ const password = req.body.password;
             })
             .then((user) => {
                 req.session.user = user;
-                res.redirect('profile')
+                res.redirect('/')
             })
         })
         .catch((error) => {
@@ -227,7 +227,7 @@ app.get('/logout', (req, res) => {
 
 // static profile page
 app.get('/profile', (req,res) => {
-    res.render('profile');
+    res.render('profile', { user: req.session.user });
 });
 
 // availability route
