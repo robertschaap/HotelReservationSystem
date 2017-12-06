@@ -276,6 +276,7 @@ app.post('/availability', (req,res) => {
 
 // select a room and send to confirmation page where user checks and confirms booking to be made
 app.post('/bookings', (req,res) => {
+    console.log(req.query.rid)
     res.render('bookings', { arrivalDate: req.query.arr, departureDate: req.query.dep, roomType: req.query.rty, roomId: req.query.rid, roomRate: req.query.rrt, user: req.session.user });
 });
 

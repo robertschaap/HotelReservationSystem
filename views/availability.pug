@@ -25,7 +25,7 @@ block content
               p #{entry.availability} room(s) available for your selected dates
 
               if user
-                form(action="/bookings?arr="+arrivalDate+"&dep="+departureDate+"&rty="+entry.roomType+"&rid="+entry.roomId+"&rrt="+entry.roomRate method="post")
+                form(action="/bookings?arr="+arrivalDate+"&dep="+departureDate+"&rty="+entry.roomType+"&rid="+entry.id+"&rrt="+entry.roomRate method="post")
                   button.btn.btn-info(type="submit") Book for € #{entry.roomRate} / night
                 small You'll still have a chance to check your details
               else
