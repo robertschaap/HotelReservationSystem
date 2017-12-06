@@ -29,10 +29,10 @@ On our end sales staff and related costs.
 In analysing the hotel supply, it is necessary to distinguish between Amsterdam and the rest of the Netherlands. In the rest of the Netherlands, the number of hotel rooms has grown by around 4% in the past four years, whereas the number of guests has risen by 21% Because demand grew faster than supply, hotels were fuller (see us for factualy market reseach and figures). src: ABN Amro Tourism Research
 
 #### How is your product different from currently available competitors?
-By service scale / quality
-By geographical location and accessibility
-By event organizing capacity
-By total number of rooms to welcome large groups
+- By service scale / quality
+- By geographical location and accessibility
+- By event organizing capacity
+- By total number of rooms to welcome large groups
 
 #### What is the current supply / demand for your product?
 The increase in tourist numbers has pushed up hotel the deman of the hotel in this country. Many smaller hotels have no good automated systems of their own and are able to take reservations only through telephone or platforms like Booking/Hotels/Priceline which take substantial commissions.
