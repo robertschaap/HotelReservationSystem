@@ -226,10 +226,16 @@ app.get('/logout', (req, res) => {
 });
 
 // static profile page
-app.get('/profile', (req,res) => {
-    res.render('profile');
+app.get('/users/:username', (req,res) => {
+  const user = req.session.user;
+  if (user === undefined) {
+    res.redirect('/?message=' + encodeURIComponent("Please log in"));
+  } else {
+    res.render('profile', {
+      user: user
+    })
+  }
 });
-
 // availability route
 // display availability results from post route
 app.get('/availability', (req,res) => {
