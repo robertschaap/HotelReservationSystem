@@ -276,16 +276,19 @@ app.post('/availability', (req,res) => {
 
 // select a room and send to confirmation page where user checks and confirms booking to be made
 app.post('/bookings', (req,res) => {
-    res.render('bookings', { arrivalDate: req.query.arr, departureDate: req.query.dep, roomType: req.query.rty, roomRate: req.query.rrt, user: req.session.user });
+    res.render('bookings', { arrivalDate: req.query.arr, departureDate: req.query.dep, roomType: req.query.rty, roomId: req.query.rid, roomRate: req.query.rrt, user: req.session.user });
 });
 
 // creating actual booking in database
 app.post('/confirmation', (req,res) => {
     console.log(req.query)
-    Booking.create({
+    Bookings.create({
         dateCheckin: req.query.arr,
         dateCheckout: req.query.dep,
-        roomType: req.query.rty
+        roomType: req.query.rty,   
+        userId: req.session.user.id,
+        roomId: req.query.rid
+    
     })
     .then((Booking) => {
         res.render('confirmation');
