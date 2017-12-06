@@ -174,7 +174,7 @@ const password = req.body.password;
             })
             .then((user) => {
                 req.session.user = user;
-                res.redirect('profile')
+                res.redirect('/')
             })
         })
         .catch((error) => {
@@ -226,6 +226,7 @@ app.get('/logout', (req, res) => {
 });
 
 // static profile page
+<<<<<<< HEAD
 app.get('/users/:username', (req,res) => {
   const user = req.session.user;
   if (user === undefined) {
@@ -235,6 +236,8 @@ app.get('/users/:username', (req,res) => {
       user: user
     })
   }
+app.get('/profile', (req,res) => {
+    res.render('profile', { user: req.session.user });
 });
 // availability route
 // display availability results from post route
