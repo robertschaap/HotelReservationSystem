@@ -4,17 +4,18 @@ const app = express();
 const myport = process.env.PORT || 3000;
 
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+
+app.set('view engine', 'pug');
+app.use(express.static('public'));
+app.use( bodyParser.urlencoded({ extended: true }) );
+
+
+// configuring and initializing modules
 const Sequelize = require('sequelize');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const Op = Sequelize.Op;
-const bcrypt = require('bcrypt');
-
-
-//configuring and initializing modules
-app.set('view engine', 'pug');
-app.use(express.static('public'));
-app.use( bodyParser.urlencoded({ extended: true }) );
 
 const sequelize = new Sequelize('reservation', process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, {
     host: 'localhost',
@@ -23,7 +24,8 @@ const sequelize = new Sequelize('reservation', process.env.POSTGRES_USER, proces
     logging: false
 });
 
-// sessions
+
+// sessions and locals
 app.use(session({
     store: new SequelizeStore({
         db: sequelize,
@@ -78,31 +80,27 @@ const Bookings = sequelize.define('bookings', {
 
 // table relationships
 // future note - if join also adding data, force PK and set FKs manually or model will restrain
-Users.belongsToMany(Rooms, { through: { model: Bookings, unique: false}, foreignKey: 'userId' });
-Rooms.belongsToMany(Users, { through: { model: Bookings, unique: false}, foreignKey: 'roomId' });
+Users.belongsToMany(Rooms, { through: { model: Bookings, unique: false }, foreignKey: 'userId' });
+Rooms.belongsToMany(Users, { through: { model: Bookings, unique: false }, foreignKey: 'roomId' });
 Rooms.hasMany(Bookings);
 
-
-//syncing database and manually inserting in pg
+// syncing database and manually inserting in pg
 sequelize.sync({ force: true })
 .then(() => {
-    Rooms.create({ roomType: "Standard", roomRate: "250", amount: 4, description: "There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort." })
-    Rooms.create({ roomType: "Deluxe", roomRate: "280", amount: 4, description: "Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included." })
-    Rooms.create({ roomType: "Junior", roomRate: "360", amount: 4, description: "Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size." })
-    Rooms.create({ roomType: "Executive", roomRate: "500", amount: 4, description: "Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city." })
+    Rooms.create({ roomType: "Standard", roomRate: "250", amount: 12, description: "There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort." })
+    Rooms.create({ roomType: "Deluxe", roomRate: "280", amount: 6, description: "Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included." })
+    Rooms.create({ roomType: "Junior", roomRate: "360", amount: 6, description: "Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size." })
+    Rooms.create({ roomType: "Executive", roomRate: "500", amount: 2, description: "Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city." })
 })
 .then(() => {
-    bcrypt.hash('p', 10).then((hash) => {
-        Users.create({ firstname: 'p', lastname: 'p', email: 'p', phone: 'p', address: 'p', passport: 'p', creditcard: 'p', password: hash })
+    bcrypt.hash('admin', 10).then((hash) => {
+        Users.create({ firstname: 'admin', lastname: 'admin', email: 'admin@hrs.com', phone: 'none', address: 'none', passport: 'none', creditcard: 'none', password: hash })
     }).then(() => {
-        Bookings.create({ userId:1, roomId:2, dateCheckin: "2017-12-01", dateCheckout: "2017-12-03", roomType: "Deluxe" })
-        Bookings.create({ userId:1, roomId:2, dateCheckin: "2017-12-01", dateCheckout: "2017-12-03", roomType: "Deluxe" })
-        Bookings.create({ userId:1, roomId:2, dateCheckin: "2017-12-01", dateCheckout: "2017-12-03", roomType: "Deluxe" })
-        Bookings.create({ userId:1, roomId:2, dateCheckin: "2017-12-04", dateCheckout: "2017-12-06", roomType: "Deluxe" })
-        Bookings.create({ userId:1, roomId:3, dateCheckin: "2017-12-01", dateCheckout: "2017-12-03", roomType: "Junior" })
-    })
-    bcrypt.hash('q', 10).then((hash) => {
-        Users.create({ firstname: 'q', lastname: 'q', email: 'q', phone: 'q', address: 'q', passport: 'q', creditcard: 'q', password: hash })
+        Bookings.create({ userId:1, roomId: 2, dateCheckin: "2017-12-07", dateCheckout: "2017-12-10", roomType: "Deluxe" })
+        Bookings.create({ userId:1, roomId: 2, dateCheckin: "2017-12-07", dateCheckout: "2017-12-10", roomType: "Deluxe" })
+        Bookings.create({ userId:1, roomId: 2, dateCheckin: "2017-12-07", dateCheckout: "2017-12-10", roomType: "Deluxe" })
+        Bookings.create({ userId:1, roomId: 2, dateCheckin: "2017-12-04", dateCheckout: "2017-12-06", roomType: "Deluxe" })
+        Bookings.create({ userId:1, roomId: 3, dateCheckin: "2017-12-08", dateCheckout: "2017-12-09", roomType: "Junior" })
     })
 })
 
@@ -150,7 +148,6 @@ app.post('/login', (req, res) => {
 
 //TO REGISTER ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
 // registration route: create new user, set session and redirect
-
 app.get('/register', (req,res) => {
     res.render('register');
 })
@@ -178,7 +175,6 @@ const password = req.body.password;
             })
         })
         .catch((error) => {
-            console.log(error)
             res.redirect('/?message=' + encodeURIComponent('Error has occurred'));
         })
 });
@@ -276,15 +272,11 @@ app.post('/availability', (req,res) => {
 
 // select a room and send to confirmation page where user checks and confirms booking to be made
 app.post('/bookings', (req,res) => {
-    console.log(req.query.rid)
     res.render('bookings', { arrivalDate: req.query.arr, departureDate: req.query.dep, roomType: req.query.rty, roomId: req.query.rid, roomRate: req.query.rrt, user: req.session.user });
 });
 
-
-
 // creating actual booking in database
 app.post('/confirmation', (req,res) => {
-    console.log(req.query)
     Bookings.create({
         dateCheckin: req.query.arr,
         dateCheckout: req.query.dep,
@@ -292,7 +284,7 @@ app.post('/confirmation', (req,res) => {
         userId: req.session.user.id,
         roomId: req.query.rid
     })
-    .then((Booking) => {
+    .then((result) => {
         res.render('confirmation');
     })
 });
