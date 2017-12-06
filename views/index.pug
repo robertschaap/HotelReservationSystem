@@ -25,17 +25,17 @@ block content
                   div.row
                     div.col-12.form-group.pl-0.pr-0
                       label.mb-0 Arrival
-                      input.form-control.onerem(type='date', name='arrivaldate' min='2017-12-01')
+                      input.form-control.onerem(type='date', name='arrivaldate' min='2017-12-01' required)
                     div.col-12.form-group.pl-0.pr-0
                       label.mb-0 Departure
-                      input.form-control.onerem(type='date', name='departuredate' min='2017-12-01')
+                      input.form-control.onerem(type='date', name='departuredate' min='2017-12-01' required)
                   div.row
                     div.col-6.form-group.pl-0.pr-1
                       label.mb-0 Adults
-                      input.form-control(type='number', name='adults' min='1' max='2' value="1")
+                      input.form-control(type='number', name='adults' min='1' max='2' value="1" required)
                     div.col-6.form-group.pl-1.pr-0
                       label.mb-0 Children
-                      input.form-control(type='number', name='children' min='0' max='2' value="1")
+                      input.form-control(type='number', name='children' min='0' max='2' value="1" required)
                 button.btn.btn-info.btn-block(type='submit') Check Availability
                 small Please make sure you log in before booking a room.
 
@@ -49,10 +49,10 @@ block content
                   div.row
                     div.col-12.form-group.pl-0.pr-0
                       label.mb-0 E-mail
-                      input.form-control(type='text', name='email')
+                      input.form-control(type='text', name='email' required)
                     div.col-12.form-group.pl-0.pr-0
                       label.mb-0 Password
-                      input.form-control(type='password', name='password' minlength='')
+                      input.form-control(type='password', name='password' required)
                 button.btn.btn-info.btn-block(type='submit') Log In
                 if message
                   small #{message}
@@ -73,7 +73,8 @@ block content
             h3 Standard Room
             p.lead
               | There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort.
-            button.btn.btn-info(type='button') Check Availability »
+            button.btn.btn-info(type='button') 
+              a.text-light(href='/#') Check Availability »
 
         div.row.mb-3
           div.col-md-6.mb-3
@@ -82,7 +83,8 @@ block content
             h3 Deluxe Room
             p.lead
               | Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included.
-            button.btn.btn-info(type='button') Check Availability »
+            button.btn.btn-info(type='button') 
+              a.text-light(href='/#') Check Availability »
 
         div.row.mb-3
           div.col-md-6.order-md-2.mb-3
@@ -91,7 +93,8 @@ block content
             h3 Junior Suite
             p.lead
               | Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size.
-            button.btn.btn-info(type='button') Check Availability »
+            button.btn.btn-info(type='button') 
+              a.text-light(href='/#') Check Availability »
 
         div.row.mb-3
           div.col-md-6.mb-3
@@ -100,7 +103,8 @@ block content
             h3 Executive Suite
             p.lead
               | Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city.
-            button.btn.btn-info(type='button') Check Availability »
+            button.btn.btn-info(type='button') 
+              a.text-light(href='/#') Check Availability »
 
         div.row.pagespacer
 
