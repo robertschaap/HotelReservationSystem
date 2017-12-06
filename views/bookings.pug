@@ -33,7 +33,7 @@ block content
             //- Booking Room Form
             form(action="/confirmation?arr="+arrivalDate+"&dep="+departureDate+"&rty="+roomType method="post").d-inline-block.pt-3.pb-4.pr-2
               button.btn.btn-success(type="submit") Confirm This Booking
-            form(action="/" method="post").d-inline-block.pt-3.pb-4
+            form(action="/" method="get").d-inline-block.pt-3.pb-4
               button.btn.btn-danger(type="submit") Cancel This Booking
 
           div.col-md-4
