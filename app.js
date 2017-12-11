@@ -24,7 +24,6 @@ const sequelize = new Sequelize('reservation', process.env.POSTGRES_USER, proces
     logging: false
 });
 
-
 // sessions and locals
 app.use(session({
     store: new SequelizeStore({
@@ -46,9 +45,8 @@ app.use((req, res, next) => {
     }
 });
 
-
 // model configuration
-const Users = sequelize.define('users', {
+const User = sequelize.define('users', {
     firstname: { type: Sequelize.STRING },
     lastname: { type: Sequelize.STRING },
     email: { type: Sequelize.STRING },
@@ -62,14 +60,14 @@ const Users = sequelize.define('users', {
     password: { type: Sequelize.STRING }
 });
 
-const Rooms = sequelize.define('rooms', {
+const Room = sequelize.define('rooms', {
     roomType: { type: Sequelize.STRING },
     roomRate: { type: Sequelize.STRING },
     description:{ type: Sequelize.STRING },
     amount: { type: Sequelize.INTEGER }
 });
 
-const Bookings = sequelize.define('bookings', {
+const Booking = sequelize.define('bookings', {
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     confirmationNumber: { type: Sequelize.INTEGER},
     dateCheckin: { type: Sequelize.DATE },
@@ -80,27 +78,27 @@ const Bookings = sequelize.define('bookings', {
 
 // table relationships
 // future note - if join also adding data, force PK and set FKs manually or model will restrain
-Users.belongsToMany(Rooms, { through: { model: Bookings, unique: false }, foreignKey: 'userId' });
-Rooms.belongsToMany(Users, { through: { model: Bookings, unique: false }, foreignKey: 'roomId' });
-Rooms.hasMany(Bookings);
+User.belongsToMany(Room, { through: { model: Booking, unique: false }, foreignKey: 'userId' });
+Room.belongsToMany(User, { through: { model: Booking, unique: false }, foreignKey: 'roomId' });
+Room.hasMany(Booking);
 
 // syncing database and manually inserting in pg
 sequelize.sync({ force: true })
 .then(() => {
-    Rooms.create({ roomType: "Standard", roomRate: "250", amount: 12, description: "There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort." })
-    Rooms.create({ roomType: "Deluxe", roomRate: "280", amount: 6, description: "Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included." })
-    Rooms.create({ roomType: "Junior", roomRate: "360", amount: 6, description: "Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size." })
-    Rooms.create({ roomType: "Executive", roomRate: "500", amount: 2, description: "Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city." })
+    Room.create({ roomType: "Standard", roomRate: "250", amount: 12, description: "There's hardly anything standard about our rooms. Experience pure comfort in a spacious 30m2 rooms designed for your comfort." })
+    Room.create({ roomType: "Deluxe", roomRate: "280", amount: 6, description: "Need a bit more room? Our deluxe rooms were designed to make your stay as pleasant as possible. 40m2 of space, great views and free breakfast included." })
+    Room.create({ roomType: "Junior", roomRate: "360", amount: 6, description: "Spacious, modern and carefully layed out to make your time in our hotel as comfortable as possible. After a long day, relax in the special seating area and feel right at home. Our Junior Suites are 50m2 in size." })
+    Room.create({ roomType: "Executive", roomRate: "500", amount: 2, description: "Our luxurious 60m2 Executive Suite offers extra space with a separate lounge as well as a working desk for our business guests. At the top floor of our hotel, the room offers an excellent view of the city." })
 })
 .then(() => {
     bcrypt.hash('admin', 10).then((hash) => {
-        Users.create({ firstname: 'admin', lastname: 'admin', email: 'admin@hrs.com', phone: 'none', address: 'none', passport: 'none', creditcard: 'none', password: hash })
+        User.create({ firstname: 'admin', lastname: 'admin', email: 'admin@hrs.com', phone: 'none', address: 'none', passport: 'none', creditcard: 'none', password: hash })
     }).then(() => {
-        Bookings.create({ userId:1, roomId: 2, dateCheckin: "2017-12-07", dateCheckout: "2017-12-10", roomType: "Deluxe" })
-        Bookings.create({ userId:1, roomId: 2, dateCheckin: "2017-12-07", dateCheckout: "2017-12-10", roomType: "Deluxe" })
-        Bookings.create({ userId:1, roomId: 2, dateCheckin: "2017-12-07", dateCheckout: "2017-12-10", roomType: "Deluxe" })
-        Bookings.create({ userId:1, roomId: 2, dateCheckin: "2017-12-04", dateCheckout: "2017-12-06", roomType: "Deluxe" })
-        Bookings.create({ userId:1, roomId: 3, dateCheckin: "2017-12-08", dateCheckout: "2017-12-09", roomType: "Junior" })
+        Booking.create({ userId:1, roomId: 2, dateCheckin: "2017-12-07", dateCheckout: "2017-12-10", roomType: "Deluxe" })
+        Booking.create({ userId:1, roomId: 2, dateCheckin: "2017-12-07", dateCheckout: "2017-12-10", roomType: "Deluxe" })
+        Booking.create({ userId:1, roomId: 2, dateCheckin: "2017-12-07", dateCheckout: "2017-12-10", roomType: "Deluxe" })
+        Booking.create({ userId:1, roomId: 2, dateCheckin: "2017-12-04", dateCheckout: "2017-12-06", roomType: "Deluxe" })
+        Booking.create({ userId:1, roomId: 3, dateCheckin: "2017-12-08", dateCheckout: "2017-12-09", roomType: "Junior" })
     })
 })
 
@@ -108,42 +106,6 @@ sequelize.sync({ force: true })
 // index route
 app.get('/', (req, res) => {
     res.render('index', { message: req.query.message });
-});
-
-//USERS LOGIN PAGE IS ON INDEX PAGE
-app.post('/login', (req, res) => {
-    let useremail = req.body.email;
-    let userpassword = req.body.password;
-
-    if ( useremail && userpassword ) {
-        Users.findOne({
-            where: {
-                email: useremail
-            }
-        }).then((queryresult) => {
-            if (!queryresult) {
-                res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-            } else {
-                return bcrypt.compare(userpassword, queryresult.password)
-                .then((res) => {
-                    if(res) {
-                        req.session.user = queryresult;
-                        return queryresult;
-                    } else {
-                        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-                    }
-                })
-            }
-        }).then((result) => {
-            if (req.session.user) {
-                res.redirect('/')
-            } else {
-                res.redirect('/?message=' + encodeURIComponent("An error occured, please login again."));
-            }
-        })
-    } else {
-        res.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
-    }
 });
 
 //TO REGISTER ROUTE CREATING NEW USER IN DATABASE and starting session for the user and sending them to their profile
@@ -156,7 +118,7 @@ app.post('/register', (req,res) => {
 const password = req.body.password;
         bcrypt.hash(password, 8)
         .then((hash) => {
-            Users.create({
+            User.create({
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 email: req.body.email,
@@ -171,6 +133,9 @@ const password = req.body.password;
             })
             .then((user) => {
                 req.session.user = user;
+                return req.session.user
+            })
+            .then((result) => {
                 res.redirect('/')
             })
         })
@@ -185,7 +150,7 @@ app.post('/login', (req, res) => {
     let userpassword = req.body.password;
 
     if ( useremail && userpassword ) {
-        Users.findOne({
+        User.findOne({
             where: {
                 email: useremail
             }
@@ -237,12 +202,12 @@ app.post('/availability', (req,res) => {
     let departureDate = req.body.departuredate
 
     // Find all rooms and include count of bookings on room between arrival and departure date
-    Rooms.findAll({
+    Room.findAll({
         attributes: {
             include: [[sequelize.fn('count', sequelize.col('bookings.id')), 'bookingscount']],
         },
         include: [{
-            model: Bookings,
+            model: Booking,
             required: false,
             attributes: [],
             where: {
@@ -277,7 +242,7 @@ app.post('/bookings', (req,res) => {
 
 // creating actual booking in database
 app.post('/confirmation', (req,res) => {
-    Bookings.create({
+    Booking.create({
         dateCheckin: req.query.arr,
         dateCheckout: req.query.dep,
         roomType: req.query.rty,   
