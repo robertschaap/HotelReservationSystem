@@ -14,12 +14,12 @@
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
-    "connect-session-sequelize": "^5.0.1",
+    "connect-session-sequelize": "^5.2.1",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
-    "pg": "^7.4.0",
-    "pug": "^2.0.0-rc.4",
-    "sequelize": "^4.22.11"
+    "pg": "^7.4.1",
+    "pug": "^2.0.1",
+    "sequelize": "^4.35.2"
   },
   "devDependencies": {}
 }
